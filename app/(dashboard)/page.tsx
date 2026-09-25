@@ -1,12 +1,15 @@
-import { API_URL, api } from '@/lib/api/client';
-
-export const dynamic = 'force-dynamic';
+import Link from 'next/link';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { API_URL, apiClient } from '@/lib/api/client';
+import { adminApi, requireAdmin } from '@/lib/session';
 
 type ApiStatus = { state: 'ok' | 'degraded' | 'unreachable'; detail: string };
 
 async function getApiStatus(): Promise<ApiStatus> {
   try {
-    const { data, error } = await api.GET('/health', { cache: 'no-store', signal: AbortSignal.timeout(3000) });
+    const { data, error } = await apiClient().GET('/health', { signal: AbortSignal.timeout(3000) });
     const body = data ?? error;
     if (body?.status === 'ok') return { state: 'ok', detail: `Database ${body.database} · up ${body.uptimeSeconds}s` };
     if (body) return { state: 'degraded', detail: `Database ${body.database}` };
@@ -16,30 +19,57 @@ async function getApiStatus(): Promise<ApiStatus> {
   }
 }
 
-const badge: Record<ApiStatus['state'], string> = {
-  ok: 'bg-emerald-100 text-emerald-800',
-  degraded: 'bg-amber-100 text-amber-800',
-  unreachable: 'bg-red-100 text-red-800',
-};
+const OPEN_STEPS = [
+  ['pending', 'To confirm by phone'],
+  ['confirmed', 'To pack'],
+  ['processing', 'To hand to courier'],
+] as const;
 
-export default async function DashboardPage() {
-  const status = await getApiStatus();
+export default async function DashboardPage({ searchParams }: PageProps<'/'>) {
+  const admin = await requireAdmin();
+  const denied = (await searchParams).denied === '1';
+  const [status, orders] = await Promise.all([
+    getApiStatus(),
+    admin.permissions.includes('orders:read')
+      ? (await adminApi()).GET('/api/v1/admin/orders', { params: { query: { status: 'open', limit: 1 } } })
+      : Promise.resolve(null),
+  ]);
+  const counts = orders?.data?.counts ?? {};
+
   return (
     <div className="space-y-6">
       <h1 className="text-xl font-semibold">Dashboard</h1>
-      <section className="max-w-sm rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-zinc-600">API status</h2>
-          <span
-            data-api-status={status.state}
-            className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${badge[status.state]}`}
-          >
-            {status.state}
-          </span>
+      {denied && (
+        <Alert variant="destructive">
+          <AlertDescription>Your role doesn&apos;t allow that page.</AlertDescription>
+        </Alert>
+      )}
+      {orders && (
+        <div className="grid gap-4 sm:grid-cols-3">
+          {OPEN_STEPS.map(([key, label]) => (
+            <Link key={key} href={`/orders?status=${key}`}>
+              <Card className="transition-colors hover:bg-muted/50">
+                <CardHeader>
+                  <CardDescription>{label}</CardDescription>
+                  <CardTitle className="text-3xl tabular-nums">{counts[key] ?? 0}</CardTitle>
+                </CardHeader>
+              </Card>
+            </Link>
+          ))}
         </div>
-        <p className="mt-2 text-sm text-zinc-500">{status.detail}</p>
-      </section>
-      <p className="text-sm text-zinc-500">Sales, orders and stock widgets arrive in Phase 3.</p>
+      )}
+      <Card className="max-w-sm">
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between text-sm font-medium text-muted-foreground">
+            API status
+            <Badge data-api-status={status.state} variant={status.state === 'ok' ? 'secondary' : 'destructive'}>
+              {status.state}
+            </Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm text-muted-foreground">{status.detail}</CardContent>
+      </Card>
+      <p className="text-sm text-muted-foreground">Sales, stock and top-product widgets arrive in part 3c.</p>
     </div>
   );
 }

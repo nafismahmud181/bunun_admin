@@ -61,10 +61,4068 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Active categories with product counts */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Category"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List, filter, search and sort products */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Category slug */
+                    category?: string;
+                    /** @description Search in product and category names */
+                    q?: string;
+                    /** @description Products priced below this */
+                    maxPrice?: number;
+                    /** @description Homepage section key, e.g. bestsellers; keeps its order */
+                    section?: string;
+                    /** @description Old storefront id, e.g. r1 */
+                    legacyId?: string;
+                    sort?: "featured" | "price_asc" | "price_desc" | "newest";
+                    page?: number;
+                    limit?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProductList"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/products/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One product with its variants and images */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProductDetail"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["NotFound"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/variants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current price and stock for cart items (unknown or hidden SKUs are left out) */
+        get: {
+            parameters: {
+                query: {
+                    /** @description Comma-separated SKUs, e.g. BN-R1-1,BN-C1-2 */
+                    skus: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CartVariant"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Public store settings: free-delivery threshold, hotline, delivery zones */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["StoreSettings"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/locations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Divisions → districts → areas for the address picker, with delivery zones */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LocationTree"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cart": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The current cart */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    "x-cart-token"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Cart"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cart/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add units of a variant (creates the cart if needed) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    "x-cart-token"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        sku: string;
+                        /** @default 1 */
+                        qty?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Cart"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cart/items/{sku}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Set the quantity of a variant (0 removes it) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    "x-cart-token"?: string;
+                };
+                path: {
+                    sku: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @description 0 removes the item */
+                        qty: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Cart"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        /** Remove a variant from the cart */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    "x-cart-token"?: string;
+                };
+                path: {
+                    sku: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Cart"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/cart/quote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Delivery fee and total for the cart, delivered to an area */
+        get: {
+            parameters: {
+                query: {
+                    areaId: number;
+                };
+                header?: {
+                    "x-cart-token"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Quote"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/checkout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Place a Cash on Delivery order from the cart
+         * @description Returns 201 for a new order and 200 when the Idempotency-Key was already used (the same order is returned).
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header: {
+                    "x-cart-token": string;
+                    /** @description A new random value (e.g. a UUID) per order attempt; resend the same value when retrying */
+                    "idempotency-key": string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        phone: string;
+                        areaId: number;
+                        /** @description House, road, area */
+                        address: string;
+                        notes?: string;
+                        /**
+                         * @description Only Cash on Delivery until Phase 4
+                         * @enum {string}
+                         */
+                        paymentMethod: "cod";
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OrderReceipt"];
+                    };
+                };
+                /** @description Default Response */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OrderReceipt"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                429: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/orders/track": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Order status by order number and the phone number used */
+        get: {
+            parameters: {
+                query: {
+                    orderNo: string;
+                    phone: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TrackedOrder"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Step 1 of sign-in: email and password */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        email: string;
+                        password: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminLoginResult"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                423: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/auth/2fa": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Step 2 of sign-in: the authenticator code (also completes two-factor setup) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        code: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminSession"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The signed-in admin */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProfile"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** End the session (responds 204) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search and filter orders (newest first) */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description "open" = pending, confirmed or processing */
+                    status?: components["schemas"]["OrderStatusInput"] | "open";
+                    paymentStatus?: "unpaid" | "partially_paid" | "paid" | "refunded";
+                    /** @description Order number, phone or name */
+                    q?: string;
+                    /** @description Placed on or after this day (Bangladesh time) */
+                    from?: string;
+                    /** @description Placed on or before this day (Bangladesh time) */
+                    to?: string;
+                    page?: number;
+                    limit?: number;
+                };
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminOrderList"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/orders/export.csv": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The same search as CSV (at most 5,000 rows) */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description "open" = pending, confirmed or processing */
+                    status?: components["schemas"]["OrderStatusInput"] | "open";
+                    paymentStatus?: "unpaid" | "partially_paid" | "paid" | "refunded";
+                    /** @description Order number, phone or name */
+                    q?: string;
+                    /** @description Placed on or after this day (Bangladesh time) */
+                    from?: string;
+                    /** @description Placed on or before this day (Bangladesh time) */
+                    to?: string;
+                    page?: number;
+                    limit?: number;
+                };
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/orders/{orderNo}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One order with items, history, notes and customer summary */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    orderNo: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminOrderDetail"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Correct contact or address details (pending or confirmed orders only) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    orderNo: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        phone?: string;
+                        areaId?: number;
+                        addressLine?: string;
+                        notes?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminOrderDetail"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/v1/admin/orders/{orderNo}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Move the order to its next status */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    orderNo: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        to: components["schemas"]["OrderStatusInput"];
+                        note?: string;
+                        /**
+                         * @description For returns: put the items back in stock (off for damaged goods)
+                         * @default true
+                         */
+                        restock?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminOrderDetail"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/orders/{orderNo}/notes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add an internal staff note */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    orderNo: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        body: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminOrderDetail"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** All categories, including hidden ones */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminCategory"][];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a category */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        nameBn?: string | null;
+                        slug?: string;
+                        /** @default true */
+                        active?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminCategory"][];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/categories/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete an empty category */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminCategory"][];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Rename, change slug, show or hide */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        nameBn?: string | null;
+                        slug?: string;
+                        active?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminCategory"][];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/v1/admin/categories/order": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Set the display order */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        ids: number[];
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminCategory"][];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/categories/{id}/image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Upload the category image (multipart field "file") */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminCategory"][];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search products (all statuses) */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Name, slug or SKU */
+                    q?: string;
+                    categoryId?: number;
+                    status?: components["schemas"]["ProductStatusInput"];
+                    page?: number;
+                    limit?: number;
+                };
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProductList"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a draft product */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        nameEn: string;
+                        nameBn?: string | null;
+                        slug?: string;
+                        descriptionEn?: string | null;
+                        descriptionBn?: string | null;
+                        categoryId: number;
+                        tag?: string | null;
+                        /**
+                         * @description New products start as drafts; add variants, then publish
+                         * @default draft
+                         * @enum {string}
+                         */
+                        status?: "draft";
+                        seoTitle?: string | null;
+                        seoDescription?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One product with variants and images */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Edit details, publish, unpublish or archive */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        nameEn?: string;
+                        nameBn?: string | null;
+                        slug?: string;
+                        descriptionEn?: string | null;
+                        descriptionBn?: string | null;
+                        categoryId?: number;
+                        tag?: string | null;
+                        status?: components["schemas"]["ProductStatusInput"];
+                        seoTitle?: string | null;
+                        seoDescription?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/duplicate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Copy as a new draft */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/variants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add a size or option */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        label: string;
+                        /** @description Left out: generated from the product */
+                        sku?: string;
+                        /** @description Whole taka */
+                        price: number;
+                        /** @description Whole taka */
+                        compareAtPrice?: number | null;
+                        weightGrams?: number | null;
+                        /** @default 0 */
+                        openingStock?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/variants/{variantId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove a variant */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                    variantId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Edit a variant (stock changes go through inventory) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                    variantId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        label?: string;
+                        sku?: string;
+                        /** @description Whole taka */
+                        price?: number;
+                        /** @description Whole taka */
+                        compareAtPrice?: number | null;
+                        weightGrams?: number | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Upload a photo (multipart: "file", optional "alt") */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                413: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/images/{imageId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove a photo */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                    imageId: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Change the alt text */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                    imageId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        alt: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/v1/admin/products/{id}/images/order": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Reorder photos (first is the main one) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        ids: number[];
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminProduct"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/inventory": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stock per variant (optionally only low stock) */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Product name or SKU */
+                    q?: string;
+                    /** @description Only variants at or below the low-stock threshold */
+                    low?: "true" | "false";
+                    page?: number;
+                    limit?: number;
+                };
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InventoryList"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/inventory/adjust": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add/remove units or record a stocktake count, with a reason */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        sku: string;
+                        reason: string;
+                        /** @description Add (+) or remove (−) units */
+                        change?: number;
+                        /** @description Or: the exact count after a stocktake */
+                        count?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            sku: string;
+                            stock: number;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/inventory/movements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stock history (orders, returns, adjustments) */
+        get: {
+            parameters: {
+                query?: {
+                    sku?: string;
+                    page?: number;
+                    limit?: number;
+                };
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MovementList"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: never;
+    schemas: {
+        ErrorInput: {
+            statusCode: number;
+            error: string;
+            code: string;
+            message: string;
+            details?: {
+                [key: string]: unknown;
+            };
+        };
+        /** @enum {string} */
+        AdminRoleInput: "owner" | "manager" | "order_handler" | "content_editor";
+        AdminProfileInput: {
+            id: number;
+            email: string;
+            name: string;
+            role: components["schemas"]["AdminRoleInput"];
+            permissions: ("orders:read" | "orders:write" | "customers:read" | "products:read" | "products:write" | "inventory:write" | "settings:write" | "staff:manage" | "audit:read")[];
+        };
+        AdminLoginResultInput: {
+            /** @enum {string} */
+            stage: "two_factor" | "two_factor_setup";
+            /** @description Short-lived; send it as a Bearer token to POST /admin/auth/2fa */
+            token: string;
+            expiresAt: string;
+            /** @description Present when two-factor authentication must be set up: show as a QR code */
+            setup?: {
+                secret: string;
+                otpauthUrl: string;
+            };
+        };
+        AdminSessionInput: {
+            token: string;
+            expiresAt: string;
+            admin: components["schemas"]["AdminProfileInput"];
+        };
+        /** @enum {string} */
+        ProductStatusInput: "draft" | "active" | "archived";
+        AdminCategoryInput: {
+            id: number;
+            slug: string;
+            name: string;
+            nameBn: string | null;
+            imageUrl: string | null;
+            sort: number;
+            active: boolean;
+            productCount: number;
+        };
+        AdminProductRowInput: {
+            id: number;
+            slug: string;
+            name: string;
+            category: {
+                id: number;
+                name: string;
+            };
+            status: components["schemas"]["ProductStatusInput"];
+            tag: string | null;
+            /** @description Whole taka */
+            priceFrom: number;
+            /** @description All variants together */
+            stock: number;
+            variantCount: number;
+            image: string | null;
+            updatedAt: string;
+        };
+        AdminProductListInput: {
+            items: components["schemas"]["AdminProductRowInput"][];
+            total: number;
+            page: number;
+            limit: number;
+        };
+        AdminVariantInput: {
+            id: number;
+            sku: string;
+            label: string;
+            /** @description Whole taka */
+            price: number;
+            /** @description Whole taka */
+            compareAtPrice: number | null;
+            stock: number;
+            weightGrams: number | null;
+            sort: number;
+        };
+        AdminImageInput: {
+            id: number;
+            url: string;
+            alt: string | null;
+            sort: number;
+        };
+        AdminProductInput: {
+            id: number;
+            slug: string;
+            legacyId: string | null;
+            nameEn: string;
+            nameBn: string | null;
+            descriptionEn: string | null;
+            descriptionBn: string | null;
+            categoryId: number;
+            tag: string | null;
+            status: components["schemas"]["ProductStatusInput"];
+            seoTitle: string | null;
+            seoDescription: string | null;
+            /** @description Whole taka */
+            priceFrom: number;
+            variants: components["schemas"]["AdminVariantInput"][];
+            images: components["schemas"]["AdminImageInput"][];
+            /** @description Orders that include this product */
+            orderCount: number;
+            createdAt: string;
+            updatedAt: string;
+        };
+        InventoryRowInput: {
+            sku: string;
+            productId: number;
+            productName: string;
+            productStatus: components["schemas"]["ProductStatusInput"];
+            label: string;
+            /** @description Whole taka */
+            price: number;
+            stock: number;
+            low: boolean;
+        };
+        InventoryListInput: {
+            items: components["schemas"]["InventoryRowInput"][];
+            total: number;
+            page: number;
+            limit: number;
+            lowStockThreshold: number;
+        };
+        MovementListInput: {
+            items: {
+                id: number;
+                at: string;
+                sku: string;
+                productName: string;
+                label: string;
+                change: number;
+                reason: string;
+                orderNo: string | null;
+                by: string | null;
+            }[];
+            total: number;
+            page: number;
+            limit: number;
+        };
+        /** @enum {string} */
+        OrderStatusInput: "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled" | "returned" | "refunded";
+        OrderReceiptInput: {
+            orderNo: string;
+            status: components["schemas"]["OrderStatusInput"];
+            /** @enum {string} */
+            paymentMethod: "cod" | "bkash" | "nagad" | "card";
+            phone: string;
+            items: {
+                sku: string;
+                name: string;
+                label: string;
+                qty: number;
+                /** @description Whole taka */
+                lineTotal: number;
+            }[];
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Whole taka */
+            deliveryFee: number;
+            /** @description Whole taka */
+            total: number;
+            createdAt: string;
+        };
+        TrackedOrderInput: {
+            orderNo: string;
+            status: components["schemas"]["OrderStatusInput"];
+            /** @enum {string} */
+            paymentMethod: "cod" | "bkash" | "nagad" | "card";
+            items: {
+                sku: string;
+                name: string;
+                label: string;
+                qty: number;
+                /** @description Whole taka */
+                lineTotal: number;
+            }[];
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Whole taka */
+            deliveryFee: number;
+            /** @description Whole taka */
+            total: number;
+            createdAt: string;
+            /** @enum {string} */
+            paymentStatus: "unpaid" | "partially_paid" | "paid" | "refunded";
+            district: string;
+            area: string;
+            history: {
+                status: components["schemas"]["OrderStatusInput"];
+                at: string;
+            }[];
+        };
+        AdminOrderRowInput: {
+            orderNo: string;
+            createdAt: string;
+            name: string;
+            phone: string;
+            district: string;
+            area: string;
+            itemCount: number;
+            /** @description Whole taka */
+            total: number;
+            status: components["schemas"]["OrderStatusInput"];
+            /** @enum {string} */
+            paymentStatus: "unpaid" | "partially_paid" | "paid" | "refunded";
+            /** @enum {string} */
+            paymentMethod: "cod" | "bkash" | "nagad" | "card";
+            source: string;
+        };
+        AdminOrderListInput: {
+            items: components["schemas"]["AdminOrderRowInput"][];
+            total: number;
+            page: number;
+            limit: number;
+            /** @description Orders per status for the current search (ignores the status filter) */
+            counts: {
+                [key: string]: number;
+            };
+        };
+        AdminOrderDetailInput: {
+            orderNo: string;
+            createdAt: string;
+            status: components["schemas"]["OrderStatusInput"];
+            /** @enum {string} */
+            paymentStatus: "unpaid" | "partially_paid" | "paid" | "refunded";
+            /** @enum {string} */
+            paymentMethod: "cod" | "bkash" | "nagad" | "card";
+            source: string;
+            allowedTransitions: components["schemas"]["OrderStatusInput"][];
+            /** @description Contact and address can still be changed (pending or confirmed) */
+            editable: boolean;
+            customer: {
+                name: string;
+                phone: string;
+                orders: number;
+                delivered: number;
+                cancelled: number;
+                returned: number;
+                /** @description Total of delivered orders */
+                spent: number;
+            };
+            address: {
+                division: string;
+                district: string;
+                area: string;
+                areaId: number | null;
+                line: string;
+                zone: string;
+            };
+            /** @description The customer's delivery notes */
+            notes: string | null;
+            items: {
+                sku: string;
+                name: string;
+                label: string;
+                /** @description Whole taka */
+                unitPrice: number;
+                qty: number;
+                /** @description Whole taka */
+                lineTotal: number;
+            }[];
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Whole taka */
+            discount: number;
+            /** @description Whole taka */
+            deliveryFee: number;
+            /** @description Whole taka */
+            total: number;
+            history: {
+                from: components["schemas"]["OrderStatusInput"] | null;
+                to: components["schemas"]["OrderStatusInput"];
+                note: string | null;
+                by: string;
+                at: string;
+            }[];
+            staffNotes: {
+                id: number;
+                body: string;
+                by: string;
+                at: string;
+            }[];
+            sms: {
+                template: string;
+                status: string;
+                at: string;
+                sentAt: string | null;
+            }[];
+            ip: string | null;
+        };
+        ImageInput: {
+            url: string;
+            alt: string | null;
+        };
+        CategoryInput: {
+            slug: string;
+            name: string;
+            imageUrl: string | null;
+            productCount: number;
+        };
+        /** @enum {string} */
+        StockStatusInput: "in_stock" | "low" | "out";
+        ProductSummaryInput: {
+            slug: string;
+            legacyId: string | null;
+            name: string;
+            category: {
+                slug: string;
+                name: string;
+            };
+            tag: string | null;
+            /** @description Lowest variant price */
+            price: number;
+            /** @description First variant's old price, if on sale */
+            compareAtPrice: number | null;
+            image: components["schemas"]["ImageInput"] | null;
+            inStock: boolean;
+            /** @description The variant a one-click "Add to Cart" adds */
+            firstVariant: {
+                sku: string;
+                label: string;
+                /** @description Whole taka */
+                price: number;
+                stockStatus: components["schemas"]["StockStatusInput"];
+            } | null;
+        };
+        VariantInput: {
+            sku: string;
+            label: string;
+            /** @description Whole taka */
+            price: number;
+            /** @description Whole taka */
+            compareAtPrice: number | null;
+            stockStatus: components["schemas"]["StockStatusInput"];
+            /** @description Only sent when stockStatus is "low" (≤ 5) */
+            stockLeft?: number;
+        };
+        ProductDetailInput: {
+            slug: string;
+            legacyId: string | null;
+            name: string;
+            category: {
+                slug: string;
+                name: string;
+            };
+            tag: string | null;
+            /** @description Lowest variant price */
+            price: number;
+            /** @description First variant's old price, if on sale */
+            compareAtPrice: number | null;
+            image: components["schemas"]["ImageInput"] | null;
+            inStock: boolean;
+            /** @description The variant a one-click "Add to Cart" adds */
+            firstVariant: {
+                sku: string;
+                label: string;
+                /** @description Whole taka */
+                price: number;
+                stockStatus: components["schemas"]["StockStatusInput"];
+            } | null;
+            description: string | null;
+            images: components["schemas"]["ImageInput"][];
+            variants: components["schemas"]["VariantInput"][];
+            seoTitle: string | null;
+            seoDescription: string | null;
+        };
+        ProductListInput: {
+            items: components["schemas"]["ProductSummaryInput"][];
+            total: number;
+            page: number;
+            limit: number;
+        };
+        CartVariantInput: {
+            sku: string;
+            label: string;
+            /** @description Whole taka */
+            price: number;
+            stockStatus: components["schemas"]["StockStatusInput"];
+            /** @description Only sent when stockStatus is "low" (≤ 5) */
+            stockLeft?: number;
+            product: {
+                slug: string;
+                name: string;
+                image: components["schemas"]["ImageInput"] | null;
+            };
+        };
+        NotFoundInput: {
+            /** @enum {number} */
+            statusCode: 404;
+            error: string;
+            message: string;
+        };
+        CartLineInput: {
+            sku: string;
+            qty: number;
+            name: string;
+            slug: string;
+            label: string;
+            image: components["schemas"]["ImageInput"] | null;
+            /** @description Whole taka */
+            unitPrice: number;
+            /** @description Whole taka */
+            lineTotal: number;
+            stockStatus: components["schemas"]["StockStatusInput"];
+            stockLeft?: number;
+            /** @description False when fewer are in stock than the quantity in the cart */
+            available: boolean;
+        };
+        CartInput: {
+            items: components["schemas"]["CartLineInput"][];
+            itemCount: number;
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Only when this request created the cart: store it and send it back */
+            token?: string;
+        };
+        QuoteInput: {
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Whole taka */
+            deliveryFee: number;
+            /** @description Whole taka */
+            total: number;
+            freeDelivery: boolean;
+            zone: {
+                key: string;
+                name: string;
+                estimate: string;
+            };
+        };
+        DeliveryZoneInput: {
+            key: string;
+            name: string;
+            /** @description Whole taka */
+            fee: number;
+            estimate: string;
+        };
+        StoreSettingsInput: {
+            /** @description Whole taka */
+            freeDeliveryThreshold: number;
+            hotline: string;
+            zones: components["schemas"]["DeliveryZoneInput"][];
+        };
+        LocationTreeInput: {
+            id: number;
+            name: string;
+            nameBn: string | null;
+            districts: {
+                id: number;
+                name: string;
+                nameBn: string | null;
+                areas: {
+                    id: number;
+                    name: string;
+                    nameBn: string | null;
+                    zone: string;
+                }[];
+            }[];
+        }[];
+        Error: {
+            statusCode: number;
+            error: string;
+            code: string;
+            message: string;
+            details?: {
+                [key: string]: unknown;
+            };
+        };
+        /** @enum {string} */
+        AdminRole: "owner" | "manager" | "order_handler" | "content_editor";
+        AdminProfile: {
+            id: number;
+            email: string;
+            name: string;
+            role: components["schemas"]["AdminRole"];
+            permissions: ("orders:read" | "orders:write" | "customers:read" | "products:read" | "products:write" | "inventory:write" | "settings:write" | "staff:manage" | "audit:read")[];
+        };
+        AdminLoginResult: {
+            /** @enum {string} */
+            stage: "two_factor" | "two_factor_setup";
+            /** @description Short-lived; send it as a Bearer token to POST /admin/auth/2fa */
+            token: string;
+            expiresAt: string;
+            /** @description Present when two-factor authentication must be set up: show as a QR code */
+            setup?: {
+                secret: string;
+                otpauthUrl: string;
+            };
+        };
+        AdminSession: {
+            token: string;
+            expiresAt: string;
+            admin: components["schemas"]["AdminProfile"];
+        };
+        /** @enum {string} */
+        ProductStatus: "draft" | "active" | "archived";
+        AdminCategory: {
+            id: number;
+            slug: string;
+            name: string;
+            nameBn: string | null;
+            imageUrl: string | null;
+            sort: number;
+            active: boolean;
+            productCount: number;
+        };
+        AdminProductRow: {
+            id: number;
+            slug: string;
+            name: string;
+            category: {
+                id: number;
+                name: string;
+            };
+            status: components["schemas"]["ProductStatus"];
+            tag: string | null;
+            /** @description Whole taka */
+            priceFrom: number;
+            /** @description All variants together */
+            stock: number;
+            variantCount: number;
+            image: string | null;
+            updatedAt: string;
+        };
+        AdminProductList: {
+            items: components["schemas"]["AdminProductRow"][];
+            total: number;
+            page: number;
+            limit: number;
+        };
+        AdminVariant: {
+            id: number;
+            sku: string;
+            label: string;
+            /** @description Whole taka */
+            price: number;
+            /** @description Whole taka */
+            compareAtPrice: number | null;
+            stock: number;
+            weightGrams: number | null;
+            sort: number;
+        };
+        AdminImage: {
+            id: number;
+            url: string;
+            alt: string | null;
+            sort: number;
+        };
+        AdminProduct: {
+            id: number;
+            slug: string;
+            legacyId: string | null;
+            nameEn: string;
+            nameBn: string | null;
+            descriptionEn: string | null;
+            descriptionBn: string | null;
+            categoryId: number;
+            tag: string | null;
+            status: components["schemas"]["ProductStatus"];
+            seoTitle: string | null;
+            seoDescription: string | null;
+            /** @description Whole taka */
+            priceFrom: number;
+            variants: components["schemas"]["AdminVariant"][];
+            images: components["schemas"]["AdminImage"][];
+            /** @description Orders that include this product */
+            orderCount: number;
+            createdAt: string;
+            updatedAt: string;
+        };
+        InventoryRow: {
+            sku: string;
+            productId: number;
+            productName: string;
+            productStatus: components["schemas"]["ProductStatus"];
+            label: string;
+            /** @description Whole taka */
+            price: number;
+            stock: number;
+            low: boolean;
+        };
+        InventoryList: {
+            items: components["schemas"]["InventoryRow"][];
+            total: number;
+            page: number;
+            limit: number;
+            lowStockThreshold: number;
+        };
+        MovementList: {
+            items: {
+                id: number;
+                at: string;
+                sku: string;
+                productName: string;
+                label: string;
+                change: number;
+                reason: string;
+                orderNo: string | null;
+                by: string | null;
+            }[];
+            total: number;
+            page: number;
+            limit: number;
+        };
+        /** @enum {string} */
+        OrderStatus: "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled" | "returned" | "refunded";
+        OrderReceipt: {
+            orderNo: string;
+            status: components["schemas"]["OrderStatus"];
+            /** @enum {string} */
+            paymentMethod: "cod" | "bkash" | "nagad" | "card";
+            phone: string;
+            items: {
+                sku: string;
+                name: string;
+                label: string;
+                qty: number;
+                /** @description Whole taka */
+                lineTotal: number;
+            }[];
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Whole taka */
+            deliveryFee: number;
+            /** @description Whole taka */
+            total: number;
+            createdAt: string;
+        };
+        TrackedOrder: {
+            orderNo: string;
+            status: components["schemas"]["OrderStatus"];
+            /** @enum {string} */
+            paymentMethod: "cod" | "bkash" | "nagad" | "card";
+            items: {
+                sku: string;
+                name: string;
+                label: string;
+                qty: number;
+                /** @description Whole taka */
+                lineTotal: number;
+            }[];
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Whole taka */
+            deliveryFee: number;
+            /** @description Whole taka */
+            total: number;
+            createdAt: string;
+            /** @enum {string} */
+            paymentStatus: "unpaid" | "partially_paid" | "paid" | "refunded";
+            district: string;
+            area: string;
+            history: {
+                status: components["schemas"]["OrderStatus"];
+                at: string;
+            }[];
+        };
+        AdminOrderRow: {
+            orderNo: string;
+            createdAt: string;
+            name: string;
+            phone: string;
+            district: string;
+            area: string;
+            itemCount: number;
+            /** @description Whole taka */
+            total: number;
+            status: components["schemas"]["OrderStatus"];
+            /** @enum {string} */
+            paymentStatus: "unpaid" | "partially_paid" | "paid" | "refunded";
+            /** @enum {string} */
+            paymentMethod: "cod" | "bkash" | "nagad" | "card";
+            source: string;
+        };
+        AdminOrderList: {
+            items: components["schemas"]["AdminOrderRow"][];
+            total: number;
+            page: number;
+            limit: number;
+            /** @description Orders per status for the current search (ignores the status filter) */
+            counts: {
+                [key: string]: number;
+            };
+        };
+        AdminOrderDetail: {
+            orderNo: string;
+            createdAt: string;
+            status: components["schemas"]["OrderStatus"];
+            /** @enum {string} */
+            paymentStatus: "unpaid" | "partially_paid" | "paid" | "refunded";
+            /** @enum {string} */
+            paymentMethod: "cod" | "bkash" | "nagad" | "card";
+            source: string;
+            allowedTransitions: components["schemas"]["OrderStatus"][];
+            /** @description Contact and address can still be changed (pending or confirmed) */
+            editable: boolean;
+            customer: {
+                name: string;
+                phone: string;
+                orders: number;
+                delivered: number;
+                cancelled: number;
+                returned: number;
+                /** @description Total of delivered orders */
+                spent: number;
+            };
+            address: {
+                division: string;
+                district: string;
+                area: string;
+                areaId: number | null;
+                line: string;
+                zone: string;
+            };
+            /** @description The customer's delivery notes */
+            notes: string | null;
+            items: {
+                sku: string;
+                name: string;
+                label: string;
+                /** @description Whole taka */
+                unitPrice: number;
+                qty: number;
+                /** @description Whole taka */
+                lineTotal: number;
+            }[];
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Whole taka */
+            discount: number;
+            /** @description Whole taka */
+            deliveryFee: number;
+            /** @description Whole taka */
+            total: number;
+            history: {
+                from: components["schemas"]["OrderStatus"] | null;
+                to: components["schemas"]["OrderStatus"];
+                note: string | null;
+                by: string;
+                at: string;
+            }[];
+            staffNotes: {
+                id: number;
+                body: string;
+                by: string;
+                at: string;
+            }[];
+            sms: {
+                template: string;
+                status: string;
+                at: string;
+                sentAt: string | null;
+            }[];
+            ip: string | null;
+        };
+        Image: {
+            url: string;
+            alt: string | null;
+        };
+        Category: {
+            slug: string;
+            name: string;
+            imageUrl: string | null;
+            productCount: number;
+        };
+        /** @enum {string} */
+        StockStatus: "in_stock" | "low" | "out";
+        ProductSummary: {
+            slug: string;
+            legacyId: string | null;
+            name: string;
+            category: {
+                slug: string;
+                name: string;
+            };
+            tag: string | null;
+            /** @description Lowest variant price */
+            price: number;
+            /** @description First variant's old price, if on sale */
+            compareAtPrice: number | null;
+            image: components["schemas"]["Image"] | null;
+            inStock: boolean;
+            /** @description The variant a one-click "Add to Cart" adds */
+            firstVariant: {
+                sku: string;
+                label: string;
+                /** @description Whole taka */
+                price: number;
+                stockStatus: components["schemas"]["StockStatus"];
+            } | null;
+        };
+        Variant: {
+            sku: string;
+            label: string;
+            /** @description Whole taka */
+            price: number;
+            /** @description Whole taka */
+            compareAtPrice: number | null;
+            stockStatus: components["schemas"]["StockStatus"];
+            /** @description Only sent when stockStatus is "low" (≤ 5) */
+            stockLeft?: number;
+        };
+        ProductDetail: {
+            slug: string;
+            legacyId: string | null;
+            name: string;
+            category: {
+                slug: string;
+                name: string;
+            };
+            tag: string | null;
+            /** @description Lowest variant price */
+            price: number;
+            /** @description First variant's old price, if on sale */
+            compareAtPrice: number | null;
+            image: components["schemas"]["Image"] | null;
+            inStock: boolean;
+            /** @description The variant a one-click "Add to Cart" adds */
+            firstVariant: {
+                sku: string;
+                label: string;
+                /** @description Whole taka */
+                price: number;
+                stockStatus: components["schemas"]["StockStatus"];
+            } | null;
+            description: string | null;
+            images: components["schemas"]["Image"][];
+            variants: components["schemas"]["Variant"][];
+            seoTitle: string | null;
+            seoDescription: string | null;
+        };
+        ProductList: {
+            items: components["schemas"]["ProductSummary"][];
+            total: number;
+            page: number;
+            limit: number;
+        };
+        CartVariant: {
+            sku: string;
+            label: string;
+            /** @description Whole taka */
+            price: number;
+            stockStatus: components["schemas"]["StockStatus"];
+            /** @description Only sent when stockStatus is "low" (≤ 5) */
+            stockLeft?: number;
+            product: {
+                slug: string;
+                name: string;
+                image: components["schemas"]["Image"] | null;
+            };
+        };
+        NotFound: {
+            /** @enum {number} */
+            statusCode: 404;
+            error: string;
+            message: string;
+        };
+        CartLine: {
+            sku: string;
+            qty: number;
+            name: string;
+            slug: string;
+            label: string;
+            image: components["schemas"]["Image"] | null;
+            /** @description Whole taka */
+            unitPrice: number;
+            /** @description Whole taka */
+            lineTotal: number;
+            stockStatus: components["schemas"]["StockStatus"];
+            stockLeft?: number;
+            /** @description False when fewer are in stock than the quantity in the cart */
+            available: boolean;
+        };
+        Cart: {
+            items: components["schemas"]["CartLine"][];
+            itemCount: number;
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Only when this request created the cart: store it and send it back */
+            token?: string;
+        };
+        Quote: {
+            /** @description Whole taka */
+            subtotal: number;
+            /** @description Whole taka */
+            deliveryFee: number;
+            /** @description Whole taka */
+            total: number;
+            freeDelivery: boolean;
+            zone: {
+                key: string;
+                name: string;
+                estimate: string;
+            };
+        };
+        DeliveryZone: {
+            key: string;
+            name: string;
+            /** @description Whole taka */
+            fee: number;
+            estimate: string;
+        };
+        StoreSettings: {
+            /** @description Whole taka */
+            freeDeliveryThreshold: number;
+            hotline: string;
+            zones: components["schemas"]["DeliveryZone"][];
+        };
+        LocationTree: {
+            id: number;
+            name: string;
+            nameBn: string | null;
+            districts: {
+                id: number;
+                name: string;
+                nameBn: string | null;
+                areas: {
+                    id: number;
+                    name: string;
+                    nameBn: string | null;
+                    zone: string;
+                }[];
+            }[];
+        }[];
+    };
     responses: never;
     parameters: never;
     requestBodies: never;
