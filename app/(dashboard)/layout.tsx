@@ -18,7 +18,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const modules = visibleModules(admin.permissions).map(({ slug, label }) => ({ slug, label }));
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden w-56 shrink-0 border-r bg-background md:block print:hidden">
+      {/* Stays in place while the page scrolls; scrolls on its own if the menu is taller than the window. */}
+      <aside className="sticky top-0 hidden h-screen w-56 shrink-0 overflow-y-auto border-r bg-background md:block print:hidden">
         <div className="flex h-14 items-center border-b px-5 font-semibold">Bunon Admin</div>
         <Sidebar modules={modules} />
       </aside>
