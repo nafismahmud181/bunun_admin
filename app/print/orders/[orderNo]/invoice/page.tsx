@@ -2,14 +2,13 @@ import type { Metadata } from 'next';
 import PrintButton from '@/components/PrintButton';
 import { PAYMENT_LABEL, dhakaDate, taka } from '@/lib/orders';
 import { loadPrintableOrder } from '@/lib/print-order';
-import { STORE_INFO } from '@/lib/store-info';
 
 export async function generateMetadata({ params }: PageProps<'/print/orders/[orderNo]/invoice'>): Promise<Metadata> {
   return { title: `Invoice ${(await params).orderNo}` };
 }
 
 export default async function InvoicePage({ params }: PageProps<'/print/orders/[orderNo]/invoice'>) {
-  const { order: o, hotline } = await loadPrintableOrder((await params).orderNo);
+  const { order: o, hotline, store } = await loadPrintableOrder((await params).orderNo);
   const due = o.paymentMethod === 'cod' && o.paymentStatus !== 'paid';
   return (
     <article className="space-y-6">
@@ -18,14 +17,13 @@ export default async function InvoicePage({ params }: PageProps<'/print/orders/[
       </div>
       <header className="flex items-start justify-between border-b pb-4">
         <div>
-          <p className="text-2xl font-bold">{STORE_INFO.name}</p>
-          <p className="text-xs text-zinc-600">{STORE_INFO.tagline}</p>
+          <p className="text-2xl font-bold">{store.name}</p>
           <p className="mt-2 text-xs text-zinc-600">
-            {STORE_INFO.address}
+            {store.address}
             <br />
-            {hotline} · {STORE_INFO.email}
+            {hotline} · {store.email}
             <br />
-            Trade licence {STORE_INFO.tradeLicence}
+            Trade licence {store.tradeLicence}
           </p>
         </div>
         <div className="text-right">
@@ -106,8 +104,8 @@ export default async function InvoicePage({ params }: PageProps<'/print/orders/[
       </table>
 
       <footer className="border-t pt-4 text-xs text-zinc-600">
-        Thank you for shopping with {STORE_INFO.name}. Unused items can be exchanged within 7 days. Questions? Call{' '}
-        {hotline}.
+        Thank you for shopping with {store.name}. Unused items can be exchanged within 7 days. Questions? Call {hotline}
+        .
       </footer>
     </article>
   );

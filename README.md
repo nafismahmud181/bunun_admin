@@ -52,7 +52,13 @@ cd ../admin && npm run gen:api
 app/
   login/                     Sign-in: password, then authenticator code (with setup the first time)
   (dashboard)/layout.tsx     Requires a session; sidebar filtered by role; sign out
-  (dashboard)/page.tsx       Dashboard: orders waiting per step, API status
+  (dashboard)/page.tsx       Dashboard: sales, orders waiting per step, 30-day revenue chart, top products, low stock
+  (dashboard)/manual-orders/ Enter an order taken on Facebook, WhatsApp or by phone
+  (dashboard)/customers/     List (search, blocked filter) and profile: orders, success rate, notes, block
+  (dashboard)/settings/      Owner only: store details, fees, fraud limits, delivery zones and areas, block list
+  (dashboard)/staff/         Owner only: invite (one-time password), role, disable, reset, sign out everywhere
+  (dashboard)/account/       Change your own password (click your name in the header)
+  (dashboard)/audit/         Audit log with person, action and date filters
   (dashboard)/orders/        List (status tabs, search, dates, CSV export), order detail, server actions
   (dashboard)/products/      List with filters, new product, editor (details, sizes and prices, photos, publish/archive/duplicate)
   (dashboard)/categories/    Rename, Bangla name, image, show/hide, reorder, add, delete empty
@@ -61,18 +67,19 @@ app/
   print/orders/[orderNo]/    Printable invoice and packing slip (use the browser's Print → Save as PDF)
 components/orders/           Status actions, notes, edit dialog, table, status badge
 components/catalogue/        Product editor parts, image manager, categories editor, stock dialog
+components/settings/         Settings form, zones editor, block list
+components/dashboard/        Revenue chart (with a table view) and top products
 components/ui/               shadcn/ui components (Base UI)
 lib/session.ts               Session cookie, authenticated API client, requireAdmin()
 lib/modules.ts               Sidebar modules and the permission each needs
-lib/store-info.ts            Business details printed on invoices: review before launch
 lib/images.ts                Picks the 400/800/1200 px size of an uploaded photo
 ```
 
 ## Roles
 
-| Role           | Can                                               |
-| -------------- | ------------------------------------------------- |
-| Owner          | Everything                                        |
-| Manager        | Orders, customers, products, inventory, audit log |
-| Order handler  | Orders and customers (read), products (read)      |
-| Content editor | Products and content                              |
+| Role           | Can                                                              |
+| -------------- | ---------------------------------------------------------------- |
+| Owner          | Everything                                                       |
+| Manager        | Orders (incl. manual), customers, products, inventory, audit log |
+| Order handler  | Orders (incl. manual), customers, products (read)                |
+| Content editor | Products and content                                             |

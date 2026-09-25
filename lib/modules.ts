@@ -24,6 +24,7 @@ export const MODULES: AdminModule[] = [
     label: 'Manual orders',
     summary: 'Enter orders taken on Facebook, WhatsApp or by phone.',
     permission: 'orders:write',
+    built: true,
   },
   {
     slug: 'products',
@@ -52,6 +53,7 @@ export const MODULES: AdminModule[] = [
     label: 'Customers',
     summary: 'Profile, order history, delivery success rate, block.',
     permission: 'customers:read',
+    built: true,
   },
   { slug: 'coupons', label: 'Coupons', summary: 'Create coupons, set rules, see usage.', permission: 'settings:write' },
   {
@@ -64,15 +66,29 @@ export const MODULES: AdminModule[] = [
   {
     slug: 'settings',
     label: 'Settings',
-    summary: 'Delivery zones, payment methods, courier and SMS keys.',
+    summary: 'Store details, delivery zones and fees, fraud limits, block list.',
     permission: 'settings:write',
+    built: true,
   },
-  { slug: 'staff', label: 'Staff', summary: 'Roles, invites, disable accounts.', permission: 'staff:manage' },
+  {
+    slug: 'staff',
+    label: 'Staff',
+    summary: 'Roles, invites, disable accounts.',
+    permission: 'staff:manage',
+    built: true,
+  },
   {
     slug: 'reports',
     label: 'Reports',
     summary: 'Sales by day, product and category; payment and courier performance.',
     permission: 'audit:read',
+  },
+  {
+    slug: 'audit',
+    label: 'Audit log',
+    summary: 'Every admin change and sign-in, with filters.',
+    permission: 'audit:read',
+    built: true,
   },
 ];
 

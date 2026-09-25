@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { signOut } from '@/app/login/actions';
 import Sidebar from '@/components/Sidebar';
 import { Button } from '@/components/ui/button';
@@ -26,10 +27,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <span className="font-semibold md:hidden">Bunon Admin</span>
           <span className="hidden text-sm text-muted-foreground md:block">Store management</span>
           <div className="flex items-center gap-3">
-            <span className="text-right text-sm leading-tight">
+            <Link
+              href="/account"
+              className="text-right text-sm leading-tight hover:underline"
+              title="Account and password"
+            >
               <span className="block font-medium">{admin.name}</span>
               <span className="block text-xs text-muted-foreground">{ROLE_LABEL[admin.role] ?? admin.role}</span>
-            </span>
+            </Link>
             <form action={signOut}>
               <Button variant="outline" size="sm" type="submit">
                 Sign out

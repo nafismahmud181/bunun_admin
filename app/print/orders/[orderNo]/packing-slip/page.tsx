@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import PrintButton from '@/components/PrintButton';
 import { dhakaDate, taka } from '@/lib/orders';
 import { loadPrintableOrder } from '@/lib/print-order';
-import { STORE_INFO } from '@/lib/store-info';
 
 export async function generateMetadata({
   params,
@@ -13,7 +12,7 @@ export async function generateMetadata({
 // For the packer: what goes in the parcel, and a large address label. No prices except the
 // amount the courier collects.
 export default async function PackingSlipPage({ params }: PageProps<'/print/orders/[orderNo]/packing-slip'>) {
-  const { order: o, hotline } = await loadPrintableOrder((await params).orderNo);
+  const { order: o, hotline, store } = await loadPrintableOrder((await params).orderNo);
   const collect = o.paymentMethod === 'cod' && o.paymentStatus !== 'paid' ? o.total : 0;
   const units = o.items.reduce((a, i) => a + i.qty, 0);
   return (
@@ -28,8 +27,8 @@ export default async function PackingSlipPage({ params }: PageProps<'/print/orde
           <p className="text-xs text-zinc-600">Placed {dhakaDate(o.createdAt)}</p>
         </div>
         <div className="text-right text-xs text-zinc-600">
-          <p className="font-semibold text-black">{STORE_INFO.name}</p>
-          <p>{STORE_INFO.address}</p>
+          <p className="font-semibold text-black">{store.name}</p>
+          <p>{store.address}</p>
           <p>{hotline}</p>
         </div>
       </header>

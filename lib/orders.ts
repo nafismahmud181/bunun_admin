@@ -69,3 +69,7 @@ export const dhakaDate = (iso: string) =>
     month: 'short',
     year: 'numeric',
   });
+
+/** Delivered as a share of finished orders (delivered + returned). */
+export const successRate = (delivered: number, returned: number) =>
+  delivered + returned ? `${Math.round((delivered / (delivered + returned)) * 100)}%` : '—';
