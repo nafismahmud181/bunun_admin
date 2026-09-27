@@ -10,6 +10,7 @@ import {
 } from '@/app/(dashboard)/products/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useConfirm } from '@/components/ConfirmProvider';
 import type { components } from '@/lib/api/schema';
 import { imgSrc } from '@/lib/images';
 
@@ -28,6 +29,7 @@ export default function ImageManager({
   const input = useRef<HTMLInputElement>(null);
   const [progress, setProgress] = useState<string | null>(null);
   const [pending, start] = useTransition();
+  const confirm = useConfirm();
 
   const upload = (files: FileList | null) => {
     if (!files?.length) return;
@@ -54,12 +56,13 @@ export default function ImageManager({
       const r = await reorderImagesAction(productId, ids);
       if (!r.ok) toast.error(r.error);
     });
-  const remove = (img: Image) =>
+  const remove = async (img: Image) => {
+    if (!(await confirm({ title: 'Remove this photo?', action: 'Remove', destructive: true }))) return;
     start(async () => {
-      if (!confirm('Remove this photo?')) return;
       const r = await deleteImageAction(productId, img.id);
       if (!r.ok) toast.error(r.error);
     });
+  };
   const saveAlt = (img: Image, alt: string) => {
     if (alt === (img.alt ?? '')) return;
     start(async () => {

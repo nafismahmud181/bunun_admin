@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import DeleteProductButton from '@/components/catalogue/DeleteProductButton';
 import ProductStatusBadge from '@/components/catalogue/ProductStatusBadge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,6 +17,7 @@ const select = 'h-9 rounded-md border bg-background px-2 text-sm';
 
 export default async function ProductsPage({ searchParams }: PageProps<'/products'>) {
   const admin = await requireAdmin('products:read');
+  const canWrite = admin.permissions.includes('products:write');
   const sp = await searchParams;
   const one = (k: string) => (Array.isArray(sp[k]) ? sp[k][0] : sp[k]) ?? '';
   const q = one('q').slice(0, 100);
@@ -90,12 +92,13 @@ export default async function ProductsPage({ searchParams }: PageProps<'/product
                 <TableHead className="text-right">From</TableHead>
                 <TableHead className="text-right">Options</TableHead>
                 <TableHead className="text-right">In stock</TableHead>
+                {canWrite && <TableHead />}
               </TableRow>
             </TableHeader>
             <TableBody>
               {data?.items.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">
+                  <TableCell colSpan={canWrite ? 8 : 7} className="py-10 text-center text-muted-foreground">
                     No products match.
                   </TableCell>
                 </TableRow>
@@ -127,6 +130,11 @@ export default async function ProductsPage({ searchParams }: PageProps<'/product
                   >
                     {p.stock}
                   </TableCell>
+                  {canWrite && (
+                    <TableCell className="text-right">
+                      <DeleteProductButton id={p.id} name={p.name} size="xs" />
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>

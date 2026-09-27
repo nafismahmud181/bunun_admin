@@ -5,6 +5,7 @@ import { useTransition } from 'react';
 import { toast } from 'sonner';
 import { deleteReviewAction, moderateReviewAction } from '@/app/(dashboard)/reviews/actions';
 import { Button } from '@/components/ui/button';
+import { useConfirm } from '@/components/ConfirmProvider';
 import type { components } from '@/lib/api/schema';
 import { imgSrc } from '@/lib/images';
 import { dhakaDateTime } from '@/lib/orders';
@@ -22,6 +23,7 @@ function Stars({ rating }: { rating: number }) {
 
 export default function ReviewCard({ review: r, canSeeOrders }: { review: Review; canSeeOrders: boolean }) {
   const [pending, start] = useTransition();
+  const confirm = useConfirm();
   const run = (fn: () => Promise<{ ok: boolean; error?: string }>, msg: string) =>
     start(async () => {
       const res = await fn();
@@ -82,9 +84,13 @@ export default function ReviewCard({ review: r, canSeeOrders }: { review: Review
             variant="ghost"
             className="text-destructive"
             disabled={pending}
-            onClick={() =>
-              confirm('Delete this review and its photos for good?') &&
-              run(() => deleteReviewAction(r.id), 'Review deleted')
+            onClick={async () =>
+              (await confirm({
+                title: 'Delete this review?',
+                description: 'The review and its photos are removed for good.',
+                action: 'Delete',
+                destructive: true,
+              })) && run(() => deleteReviewAction(r.id), 'Review deleted')
             }
           >
             Delete

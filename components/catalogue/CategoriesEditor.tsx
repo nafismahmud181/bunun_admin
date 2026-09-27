@@ -11,8 +11,10 @@ import {
 } from '@/app/(dashboard)/categories/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useConfirm } from '@/components/ConfirmProvider';
 import type { components } from '@/lib/api/schema';
 import { imgSrc } from '@/lib/images';
+import OptionFieldsDialog from './OptionFieldsDialog';
 
 type Category = components['schemas']['AdminCategory'];
 
@@ -33,6 +35,7 @@ function CategoryRow({
   const [nameBn, setNameBn] = useState(c.nameBn ?? '');
   const [pending, start] = useTransition();
   const file = useRef<HTMLInputElement>(null);
+  const confirm = useConfirm();
   const dirty = name.trim() !== c.name || nameBn.trim() !== (c.nameBn ?? '');
   const run = (fn: () => Promise<{ ok: boolean; error?: string }>, success?: string) =>
     start(async () => {
@@ -80,7 +83,8 @@ function CategoryRow({
         />
         <p className="text-xs text-muted-foreground sm:col-span-2">
           /shop?cat={c.slug} · {c.productCount} product{c.productCount === 1 ? '' : 's'}
-          {!c.active && ' · hidden from the store'}
+          {!c.active && ' · hidden from the store'} · {c.optionLabel}:{' '}
+          {c.variantFields.map((f) => (f.unit ? `${f.label} (${f.unit})` : f.label)).join(', ') || 'name only'}
         </p>
       </div>
       {canWrite && (
@@ -96,6 +100,7 @@ function CategoryRow({
               Save
             </Button>
           )}
+          <OptionFieldsDialog key={JSON.stringify([c.optionLabel, c.variantFields])} c={c} />
           <Button
             size="sm"
             variant="outline"
@@ -132,7 +137,14 @@ function CategoryRow({
             variant="ghost"
             disabled={pending || c.productCount > 0}
             title={c.productCount > 0 ? 'Only empty categories can be deleted' : undefined}
-            onClick={() => confirm(`Delete ${c.name}?`) && run(() => deleteCategoryAction(c.id), 'Deleted')}
+            onClick={async () =>
+              (await confirm({
+                title: `Delete ${c.name}?`,
+                description: 'The category is removed from the store menu. This can’t be undone.',
+                action: 'Delete',
+                destructive: true,
+              })) && run(() => deleteCategoryAction(c.id), 'Deleted')
+            }
           >
             Delete
           </Button>

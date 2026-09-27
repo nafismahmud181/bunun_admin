@@ -29,6 +29,7 @@ type VariantInput = {
   compareAtPrice?: number | null;
   weightGrams?: number | null;
   openingStock?: number;
+  attributes?: Record<string, string>;
 };
 
 const refreshed = (id: number): Result => {
@@ -66,6 +67,15 @@ export async function duplicateProductAction(id: number): Promise<Result> {
   const { data, error } = await (await adminApi()).POST('/api/v1/admin/products/{id}/duplicate', path(id));
   if (!data) return { ok: false, error: errorMessage(error) };
   redirect(`/products/${data.id}`);
+}
+
+/** Deletes a product no order includes (the API refuses ordered ones: archive those instead). */
+export async function deleteProductAction(id: number): Promise<Result> {
+  await requireAdmin('products:write');
+  const { error } = await (await adminApi()).DELETE('/api/v1/admin/products/{id}', path(id));
+  if (error) return { ok: false, error: errorMessage(error) };
+  revalidatePath('/products');
+  return { ok: true };
 }
 
 export async function addVariantAction(id: number, v: VariantInput): Promise<Result> {

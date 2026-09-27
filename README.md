@@ -65,7 +65,7 @@ app/
   (dashboard)/content/pages/[slug]/  Store page editor (about, privacy, terms, refund policy) with a live preview
   (dashboard)/orders/        List (status tabs, search, dates, CSV export), order detail, server actions
   (dashboard)/products/      List with filters, new product, editor (details, sizes and prices, photos, publish/archive/duplicate)
-  (dashboard)/categories/    Rename, Bangla name, image, show/hide, reorder, add, delete empty
+  (dashboard)/categories/    Rename, Bangla name, image, show/hide, reorder, add, delete empty, and Options: what each product option records (e.g. Dimensions, Colour, shipping weight)
   (dashboard)/inventory/     Stock per variant, low-stock filter, adjust/stocktake dialog, stock history
   (dashboard)/[module]/      Placeholder for modules not built yet
   print/orders/[orderNo]/    Printable invoice and packing slip (use the browser's Print → Save as PDF)

@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useConfirm } from '@/components/ConfirmProvider';
 import type { components } from '@/lib/api/schema';
 
 type Zone = components['schemas']['AdminZone'];
@@ -23,6 +24,7 @@ function ZoneRow({ zone }: { zone: Zone }) {
   const [fee, setFee] = useState(String(zone.fee));
   const [estimate, setEstimate] = useState(zone.estimate);
   const [pending, start] = useTransition();
+  const confirm = useConfirm();
   const dirty = name !== zone.name || Number(fee) !== zone.fee || estimate !== zone.estimate;
   const run = (fn: () => Promise<{ ok: boolean; error?: string }>, msg: string) =>
     start(async () => {
@@ -74,7 +76,10 @@ function ZoneRow({ zone }: { zone: Zone }) {
             size="sm"
             variant="ghost"
             disabled={pending}
-            onClick={() => confirm(`Delete ${zone.name}?`) && run(() => deleteZoneAction(zone.key), 'Zone deleted')}
+            onClick={async () =>
+              (await confirm({ title: `Delete ${zone.name}?`, action: 'Delete', destructive: true })) &&
+              run(() => deleteZoneAction(zone.key), 'Zone deleted')
+            }
           >
             Delete
           </Button>

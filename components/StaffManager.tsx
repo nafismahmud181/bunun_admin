@@ -20,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useConfirm } from '@/components/ConfirmProvider';
 import type { components } from '@/lib/api/schema';
 import { dhakaDateTime } from '@/lib/orders';
 
@@ -73,6 +74,7 @@ export default function StaffManager({ staff, meId }: { staff: Member[]; meId: n
   const [form, setForm] = useState({ email: '', name: '', role: 'order_handler' as Role });
   const [shown, setShown] = useState<{ email: string; password: string } | null>(null);
   const [pending, start] = useTransition();
+  const confirm = useConfirm();
   const run = (fn: () => Promise<{ ok: boolean; error?: string; password?: string }>, msg: string, email?: string) =>
     start(async () => {
       const r = await fn();
@@ -150,9 +152,13 @@ export default function StaffManager({ staff, meId }: { staff: Member[]; meId: n
                           size="sm"
                           variant="ghost"
                           disabled={pending}
-                          onClick={() =>
-                            confirm(`Give ${m.name} a new password? Their two-factor setup is reset too.`) &&
-                            run(() => resetStaffAction(m.id), 'Password reset', m.email)
+                          onClick={async () =>
+                            (await confirm({
+                              title: `Give ${m.name} a new password?`,
+                              description: 'Their two-factor setup is reset too, and they are signed out everywhere.',
+                              action: 'Reset',
+                              destructive: true,
+                            })) && run(() => resetStaffAction(m.id), 'Password reset', m.email)
                           }
                         >
                           Reset

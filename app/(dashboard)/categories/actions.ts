@@ -24,7 +24,14 @@ export async function createCategoryAction(name: string, nameBn: string): Promis
 
 export async function updateCategoryAction(
   id: number,
-  changes: { name?: string; nameBn?: string | null; slug?: string; active?: boolean },
+  changes: {
+    name?: string;
+    nameBn?: string | null;
+    slug?: string;
+    active?: boolean;
+    optionLabel?: string;
+    variantFields?: { key: string; label: string; unit?: string | null }[];
+  },
 ): Promise<Result> {
   await requireAdmin('products:write');
   const { error } = await (

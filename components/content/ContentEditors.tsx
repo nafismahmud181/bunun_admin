@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useConfirm } from '@/components/ConfirmProvider';
 import { fromDhakaInput, toDhakaInput } from '@/lib/dhaka';
 import { imgSrc } from '@/lib/images';
 
@@ -43,6 +44,7 @@ function Actions({
   isDefault: boolean;
   run: (fn: () => Promise<{ ok: boolean; error?: string }>, msg: string) => void;
 }) {
+  const confirm = useConfirm();
   return (
     <div className="flex flex-wrap items-center gap-2 pt-2">
       <Button onClick={onSave} disabled={pending || !dirty}>
@@ -52,9 +54,12 @@ function Actions({
         <Button
           variant="ghost"
           disabled={pending}
-          onClick={() =>
-            confirm('Go back to the original content for this part of the homepage?') &&
-            run(() => resetContentAction(resetKey), 'Back to the original')
+          onClick={async () =>
+            (await confirm({
+              title: 'Go back to the original?',
+              description: 'This part of the homepage returns to the content the store was built with.',
+              action: 'Use the original',
+            })) && run(() => resetContentAction(resetKey), 'Back to the original')
           }
         >
           Use the original

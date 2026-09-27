@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useConfirm } from '@/components/ConfirmProvider';
 import { type Coupon, fromDhakaInput, toDhakaInput } from '@/lib/coupons';
 import { cn } from '@/lib/utils';
 
@@ -28,6 +29,7 @@ const num = (s: string) => (s.trim() === '' ? null : Number(s));
 export default function CouponForm({ coupon, onDone }: { coupon?: Coupon; onDone?: () => void }) {
   const router = useRouter();
   const [pending, start] = useTransition();
+  const confirm = useConfirm();
   const locked = !!coupon && coupon.usedCount > 0;
   const [f, setF] = useState({
     code: coupon?.code ?? '',
@@ -217,8 +219,13 @@ export default function CouponForm({ coupon, onDone }: { coupon?: Coupon; onDone
             variant="ghost"
             className={cn('text-destructive')}
             disabled={pending}
-            onClick={() =>
-              confirm(`Delete coupon ${coupon.code}?`) &&
+            onClick={async () =>
+              (await confirm({
+                title: `Delete coupon ${coupon.code}?`,
+                description: 'Nobody has used it yet. This can’t be undone.',
+                action: 'Delete',
+                destructive: true,
+              })) &&
               start(async () => {
                 const r = await deleteCouponAction(coupon.id);
                 if (!r.ok) return void toast.error(r.error);

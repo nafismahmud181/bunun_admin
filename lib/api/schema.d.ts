@@ -2030,6 +2030,8 @@ export interface paths {
                         nameBn?: string | null;
                         slug?: string;
                         active?: boolean;
+                        optionLabel?: string;
+                        variantFields?: components["schemas"]["VariantFieldInput"][];
                     };
                 };
             };
@@ -2522,7 +2524,76 @@ export interface paths {
         };
         put?: never;
         post?: never;
-        delete?: never;
+        /** Delete a product no order includes (ordered products can only be archived) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": null;
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         options?: never;
         head?: never;
         /** Edit details, publish, unpublish or archive */
@@ -2731,6 +2802,9 @@ export interface paths {
                         weightGrams?: number | null;
                         /** @default 0 */
                         openingStock?: number;
+                        attributes?: {
+                            [key: string]: string;
+                        };
                     };
                 };
             };
@@ -2903,6 +2977,9 @@ export interface paths {
                         /** @description Whole taka */
                         compareAtPrice?: number | null;
                         weightGrams?: number | null;
+                        attributes?: {
+                            [key: string]: string;
+                        };
                     };
                 };
             };
@@ -7384,6 +7461,13 @@ export interface components {
         };
         /** @enum {string} */
         ProductStatusInput: "draft" | "active" | "archived";
+        VariantFieldInput: {
+            /** @description "weight" is the shipping weight in grams */
+            key: string;
+            label: string;
+            /** @description Shown after the value, e.g. "in" or "cm" */
+            unit?: string | null;
+        };
         AdminCategoryInput: {
             id: number;
             slug: string;
@@ -7393,6 +7477,9 @@ export interface components {
             sort: number;
             active: boolean;
             productCount: number;
+            /** @description What one option is called, e.g. "Size" or "Dimensions" */
+            optionLabel: string;
+            variantFields: components["schemas"]["VariantFieldInput"][];
         };
         AdminProductRowInput: {
             id: number;
@@ -7428,6 +7515,10 @@ export interface components {
             compareAtPrice: number | null;
             stock: number;
             weightGrams: number | null;
+            /** @description Values for the category's option fields */
+            attributes: {
+                [key: string]: string;
+            };
             sort: number;
         };
         AdminImageInput: {
@@ -7754,6 +7845,11 @@ export interface components {
             stockStatus: components["schemas"]["StockStatusInput"];
             /** @description Only sent when stockStatus is "low" (≤ 5) */
             stockLeft?: number;
+            /** @description The option's details, e.g. Dimensions: 16 × 72 in (product pages only) */
+            details?: {
+                label: string;
+                value: string;
+            }[];
         };
         ProductDetailInput: {
             slug: string;
@@ -7783,6 +7879,8 @@ export interface components {
                 price: number;
                 stockStatus: components["schemas"]["StockStatusInput"];
             } | null;
+            /** @description What one option is called, e.g. "Size" or "Dimensions" */
+            optionLabel: string;
             description: string | null;
             images: components["schemas"]["ImageInput"][];
             variants: components["schemas"]["VariantInput"][];
@@ -7803,6 +7901,11 @@ export interface components {
             stockStatus: components["schemas"]["StockStatusInput"];
             /** @description Only sent when stockStatus is "low" (≤ 5) */
             stockLeft?: number;
+            /** @description The option's details, e.g. Dimensions: 16 × 72 in (product pages only) */
+            details?: {
+                label: string;
+                value: string;
+            }[];
             product: {
                 slug: string;
                 name: string;
@@ -8285,6 +8388,13 @@ export interface components {
         };
         /** @enum {string} */
         ProductStatus: "draft" | "active" | "archived";
+        VariantField: {
+            /** @description "weight" is the shipping weight in grams */
+            key: string;
+            label: string;
+            /** @description Shown after the value, e.g. "in" or "cm" */
+            unit?: string | null;
+        };
         AdminCategory: {
             id: number;
             slug: string;
@@ -8294,6 +8404,9 @@ export interface components {
             sort: number;
             active: boolean;
             productCount: number;
+            /** @description What one option is called, e.g. "Size" or "Dimensions" */
+            optionLabel: string;
+            variantFields: components["schemas"]["VariantField"][];
         };
         AdminProductRow: {
             id: number;
@@ -8329,6 +8442,10 @@ export interface components {
             compareAtPrice: number | null;
             stock: number;
             weightGrams: number | null;
+            /** @description Values for the category's option fields */
+            attributes: {
+                [key: string]: string;
+            };
             sort: number;
         };
         AdminImage: {
@@ -8655,6 +8772,11 @@ export interface components {
             stockStatus: components["schemas"]["StockStatus"];
             /** @description Only sent when stockStatus is "low" (≤ 5) */
             stockLeft?: number;
+            /** @description The option's details, e.g. Dimensions: 16 × 72 in (product pages only) */
+            details?: {
+                label: string;
+                value: string;
+            }[];
         };
         ProductDetail: {
             slug: string;
@@ -8684,6 +8806,8 @@ export interface components {
                 price: number;
                 stockStatus: components["schemas"]["StockStatus"];
             } | null;
+            /** @description What one option is called, e.g. "Size" or "Dimensions" */
+            optionLabel: string;
             description: string | null;
             images: components["schemas"]["Image"][];
             variants: components["schemas"]["Variant"][];
@@ -8704,6 +8828,11 @@ export interface components {
             stockStatus: components["schemas"]["StockStatus"];
             /** @description Only sent when stockStatus is "low" (≤ 5) */
             stockLeft?: number;
+            /** @description The option's details, e.g. Dimensions: 16 × 72 in (product pages only) */
+            details?: {
+                label: string;
+                value: string;
+            }[];
             product: {
                 slug: string;
                 name: string;

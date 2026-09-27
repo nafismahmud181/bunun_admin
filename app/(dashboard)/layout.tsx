@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { signOut } from '@/app/login/actions';
+import { ConfirmProvider } from '@/components/ConfirmProvider';
 import Sidebar from '@/components/Sidebar';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/sonner';
@@ -43,7 +44,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
             </form>
           </div>
         </header>
-        <main className="flex-1 bg-muted/30 p-4 md:p-6">{children}</main>
+        <main className="flex-1 bg-muted/30 p-4 md:p-6">
+          <ConfirmProvider>{children}</ConfirmProvider>
+        </main>
       </div>
       <Toaster richColors position="top-right" />
     </div>
