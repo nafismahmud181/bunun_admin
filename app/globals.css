@@ -136,3 +136,35 @@ body {
     @apply font-sans;
   }
 }
+
+/* Store page preview (Content → pages): mirrors the storefront's .legal page style. */
+.page-preview h1 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.page-preview h2 {
+  margin: 20px 0 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.page-preview h3 {
+  margin: 16px 0 4px;
+  font-weight: 600;
+}
+.page-preview p {
+  margin: 0 0 10px;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+.page-preview ul {
+  margin: 0 0 10px;
+  padding-left: 1.25rem;
+  list-style: disc;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+.page-preview a {
+  color: var(--primary);
+  text-decoration: underline;
+}

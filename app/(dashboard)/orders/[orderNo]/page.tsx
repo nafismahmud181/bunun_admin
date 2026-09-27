@@ -126,10 +126,15 @@ export default async function OrderPage({ params }: PageProps<'/orders/[orderNo]
                     <TableCell colSpan={4}>Subtotal</TableCell>
                     <TableCell className="text-right tabular-nums">{taka(o.subtotal)}</TableCell>
                   </TableRow>
-                  {o.discount > 0 && (
+                  {(o.discount > 0 || o.couponCode) && (
                     <TableRow>
-                      <TableCell colSpan={4}>Discount</TableCell>
-                      <TableCell className="text-right tabular-nums">−{taka(o.discount)}</TableCell>
+                      <TableCell colSpan={4}>
+                        Discount
+                        {o.couponCode && <span className="text-muted-foreground"> · coupon {o.couponCode}</span>}
+                      </TableCell>
+                      <TableCell className="text-right tabular-nums">
+                        {o.discount > 0 ? `−${taka(o.discount)}` : 'Free delivery'}
+                      </TableCell>
                     </TableRow>
                   )}
                   <TableRow>

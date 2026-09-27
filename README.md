@@ -59,6 +59,10 @@ app/
   (dashboard)/staff/         Owner only: invite (one-time password), role, disable, reset, sign out everywhere
   (dashboard)/account/       Change your own password (click your name in the header)
   (dashboard)/audit/         Audit log with person, action and date filters
+  (dashboard)/coupons/       Coupons: list by state, create, edit or disable, orders that used each one
+  (dashboard)/reviews/       Review approval queue (waiting / approved / rejected) with customer photos
+  (dashboard)/content/       CMS: sale banner and countdown, promo tiles, homepage section order, best sellers and new arrivals, FAQ
+  (dashboard)/content/pages/[slug]/  Store page editor (about, privacy, terms, refund policy) with a live preview
   (dashboard)/orders/        List (status tabs, search, dates, CSV export), order detail, server actions
   (dashboard)/products/      List with filters, new product, editor (details, sizes and prices, photos, publish/archive/duplicate)
   (dashboard)/categories/    Rename, Bangla name, image, show/hide, reorder, add, delete empty
@@ -69,6 +73,9 @@ components/orders/           Status actions, notes, edit dialog, table, status b
 components/catalogue/        Product editor parts, image manager, categories editor, stock dialog
 components/settings/         Settings form, zones editor, block list
 components/dashboard/        Revenue chart (with a table view) and top products
+components/marketing/        Coupon form, review card
+components/content/          CMS editors and the page editor
+lib/markdown.tsx             The Markdown subset for store pages (same as the storefront's, for the preview)
 components/ui/               shadcn/ui components (Base UI)
 lib/session.ts               Session cookie, authenticated API client, requireAdmin()
 lib/modules.ts               Sidebar modules and the permission each needs
@@ -77,9 +84,9 @@ lib/images.ts                Picks the 400/800/1200 px size of an uploaded photo
 
 ## Roles
 
-| Role           | Can                                                              |
-| -------------- | ---------------------------------------------------------------- |
-| Owner          | Everything                                                       |
-| Manager        | Orders (incl. manual), customers, products, inventory, audit log |
-| Order handler  | Orders (incl. manual), customers, products (read)                |
-| Content editor | Products and content                                             |
+| Role           | Can                                                                                |
+| -------------- | ---------------------------------------------------------------------------------- |
+| Owner          | Everything                                                                         |
+| Manager        | Orders (incl. manual), customers, products, inventory, coupons, reviews, audit log |
+| Order handler  | Orders (incl. manual), customers, products (read)                                  |
+| Content editor | Products, reviews and content                                                      |

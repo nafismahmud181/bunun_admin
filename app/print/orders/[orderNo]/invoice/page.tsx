@@ -80,12 +80,12 @@ export default async function InvoicePage({ params }: PageProps<'/print/orders/[
             </td>
             <td className="pt-3 text-right">{taka(o.subtotal)}</td>
           </tr>
-          {o.discount > 0 && (
+          {(o.discount > 0 || o.couponCode) && (
             <tr>
               <td colSpan={4} className="text-right">
-                Discount
+                Discount{o.couponCode && ` (coupon ${o.couponCode})`}
               </td>
-              <td className="text-right">−{taka(o.discount)}</td>
+              <td className="text-right">{o.discount > 0 ? `−${taka(o.discount)}` : 'Free delivery'}</td>
             </tr>
           )}
           <tr>

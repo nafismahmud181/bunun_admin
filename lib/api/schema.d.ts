@@ -118,6 +118,8 @@ export interface paths {
                     section?: string;
                     /** @description Old storefront id, e.g. r1 */
                     legacyId?: string;
+                    /** @description Only these products, e.g. for a wishlist (unknown or hidden ones are left out) */
+                    slugs?: string;
                     sort?: "featured" | "price_asc" | "price_desc" | "newest";
                     page?: number;
                     limit?: number;
@@ -533,8 +535,12 @@ export interface paths {
         /** Delivery fee and total for the cart, delivered to an area */
         get: {
             parameters: {
-                query: {
-                    areaId: number;
+                query?: {
+                    /** @description Without it, the quote has no delivery fee yet */
+                    areaId?: number;
+                    coupon?: string;
+                    /** @description With a coupon: also checks its per-phone and first-order rules */
+                    phone?: string;
                 };
                 header?: {
                     "x-cart-token"?: string;
@@ -605,6 +611,7 @@ export interface paths {
                         /** @description House, road, area */
                         address: string;
                         notes?: string;
+                        coupon?: string;
                         /**
                          * @description Only Cash on Delivery until Phase 4
                          * @enum {string}
@@ -712,6 +719,304 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/products/{slug}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A product's approved reviews, newest first, with the star breakdown */
+        get: {
+            parameters: {
+                query?: {
+                    page?: number;
+                    limit?: number;
+                };
+                header?: never;
+                path: {
+                    slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProductReviews"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["NotFound"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reviews/featured": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Recent 4- and 5-star reviews for the homepage, with the store-wide average */
+        get: {
+            parameters: {
+                query?: {
+                    limit?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FeaturedReviews"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reviews/lookup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** The products a delivered order can review (order number + phone) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        orderNo: string;
+                        phone: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ReviewableOrder"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Submit a review (multipart/form-data)
+         * @description Fields: orderNo, phone, slug, rating (1–5), name, body; up to 3 image files named "photo" (10 MB each). The review is shown once staff approve it.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ReviewSubmitted"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                413: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Homepage content: sale banner, promo tiles, section order, FAQ */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["StoreContent"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/pages/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A legal or information page (about, privacy, terms, refund-policy) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    slug: "about" | "privacy" | "terms" | "refund-policy";
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["StorePage"];
                     };
                 };
             };
@@ -5303,6 +5608,1741 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/coupons": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Coupons with their state and usage */
+        get: {
+            parameters: {
+                query?: {
+                    q?: string;
+                    state?: components["schemas"]["CouponStateInput"];
+                };
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminCoupon"][];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a coupon */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        code: string;
+                        /** @description Staff-facing note, also shown at checkout */
+                        description?: string | null;
+                        type: components["schemas"]["CouponTypeInput"];
+                        /** @description Percent for "percent", taka for "fixed", 0 for "free_delivery" */
+                        value: number;
+                        /** @description Cap for a percentage discount */
+                        maxDiscount?: number | null;
+                        /**
+                         * @description Whole taka
+                         * @default 0
+                         */
+                        minSubtotal?: number;
+                        /**
+                         * Format: date-time
+                         * @description ISO date-time
+                         */
+                        startsAt?: string | null;
+                        /**
+                         * Format: date-time
+                         * @description ISO date-time
+                         */
+                        endsAt?: string | null;
+                        /** @description Total uses; null = unlimited */
+                        usageLimit?: number | null;
+                        /** @default 1 */
+                        perPhoneLimit?: number;
+                        /** @default false */
+                        firstOrderOnly?: boolean;
+                        /** @default true */
+                        active?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CouponDetail"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/coupons/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A coupon with the orders that used it */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CouponDetail"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** Delete a coupon no order has used */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": null;
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Edit a coupon (its discount is fixed once used) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @description Staff-facing note, also shown at checkout */
+                        description?: string | null;
+                        type?: components["schemas"]["CouponTypeInput"];
+                        /** @description Percent for "percent", taka for "fixed", 0 for "free_delivery" */
+                        value?: number;
+                        /** @description Cap for a percentage discount */
+                        maxDiscount?: number | null;
+                        /** @description Whole taka */
+                        minSubtotal?: number;
+                        /**
+                         * Format: date-time
+                         * @description ISO date-time
+                         */
+                        startsAt?: string | null;
+                        /**
+                         * Format: date-time
+                         * @description ISO date-time
+                         */
+                        endsAt?: string | null;
+                        /** @description Total uses; null = unlimited */
+                        usageLimit?: number | null;
+                        perPhoneLimit?: number;
+                        firstOrderOnly?: boolean;
+                        active?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CouponDetail"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/v1/admin/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Reviews by status (the pending queue oldest first) */
+        get: {
+            parameters: {
+                query?: {
+                    status?: components["schemas"]["ReviewStatusInput"];
+                    productId?: number;
+                    page?: number;
+                    limit?: number;
+                };
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminReviewList"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/reviews/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a review and its photos */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": null;
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Approve or reject a review */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        status: "approved" | "rejected";
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminReview"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/v1/admin/content": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Every content block (defaults where unsaved) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminContent"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/content/hero": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Save the sale banner and countdown */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["HeroContentInput"];
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminContent"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/content/promos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Save the promo tiles (up to 4) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        promos: components["schemas"]["PromoTileInput"][];
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminContent"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/content/sections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Save the order and visibility of homepage sections */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        sections: {
+                            key: components["schemas"]["HomeSectionKeyInput"];
+                            visible: boolean;
+                        }[];
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminContent"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/content/faq": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Save the FAQ */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        faq: components["schemas"]["FaqItemInput"][];
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminContent"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/content/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Put a block back to its default */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    key: "hero" | "promos" | "homepage_sections" | "faq";
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminContent"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/content/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Upload an image for a promo tile (multipart field "file") */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UploadedImage"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                413: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/content/section-products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Products hand-picked for the Best sellers and New arrivals sections */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SectionProducts"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/content/section-products/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Set the products (in order) of a homepage section */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    key: "bestsellers" | "new-arrivals";
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @description In display order */
+                        productIds: number[];
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SectionProducts"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/pages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Legal and information pages */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminPageSummary"][];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/pages/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One page */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    slug: "about" | "privacy" | "terms" | "refund-policy";
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminPage"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        /** Save a page */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    slug: "about" | "privacy" | "terms" | "refund-policy";
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        title: string;
+                        body: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminPage"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -5323,7 +7363,7 @@ export interface components {
             email: string;
             name: string;
             role: components["schemas"]["AdminRoleInput"];
-            permissions: ("orders:read" | "orders:write" | "customers:read" | "customers:write" | "products:read" | "products:write" | "inventory:write" | "settings:write" | "staff:manage" | "audit:read")[];
+            permissions: ("orders:read" | "orders:write" | "customers:read" | "customers:write" | "products:read" | "products:write" | "inventory:write" | "coupons:write" | "content:write" | "settings:write" | "staff:manage" | "audit:read")[];
         };
         AdminLoginResultInput: {
             /** @enum {string} */
@@ -5471,6 +7511,9 @@ export interface components {
             /** @description Whole taka */
             subtotal: number;
             /** @description Whole taka */
+            discount: number;
+            couponCode: string | null;
+            /** @description Whole taka */
             deliveryFee: number;
             /** @description Whole taka */
             total: number;
@@ -5491,6 +7534,9 @@ export interface components {
             }[];
             /** @description Whole taka */
             subtotal: number;
+            /** @description Whole taka */
+            discount: number;
+            couponCode: string | null;
             /** @description Whole taka */
             deliveryFee: number;
             /** @description Whole taka */
@@ -5684,6 +7730,11 @@ export interface components {
             compareAtPrice: number | null;
             image: components["schemas"]["ImageInput"] | null;
             inStock: boolean;
+            /** @description From approved reviews; null until the first one */
+            rating: {
+                average: number;
+                count: number;
+            } | null;
             /** @description The variant a one-click "Add to Cart" adds */
             firstVariant: {
                 sku: string;
@@ -5719,6 +7770,11 @@ export interface components {
             compareAtPrice: number | null;
             image: components["schemas"]["ImageInput"] | null;
             inStock: boolean;
+            /** @description From approved reviews; null until the first one */
+            rating: {
+                average: number;
+                count: number;
+            } | null;
             /** @description The variant a one-click "Add to Cart" adds */
             firstVariant: {
                 sku: string;
@@ -5758,6 +7814,193 @@ export interface components {
             statusCode: 404;
             error: string;
             message: string;
+        };
+        /** @enum {string} */
+        CouponTypeInput: "percent" | "fixed" | "free_delivery";
+        /** @enum {string} */
+        CouponStateInput: "active" | "scheduled" | "expired" | "used_up" | "disabled";
+        AdminCouponInput: {
+            id: number;
+            code: string;
+            description: string | null;
+            type: components["schemas"]["CouponTypeInput"];
+            value: number;
+            maxDiscount: number | null;
+            minSubtotal: number;
+            startsAt: string | null;
+            endsAt: string | null;
+            usageLimit: number | null;
+            perPhoneLimit: number;
+            firstOrderOnly: boolean;
+            active: boolean;
+            usedCount: number;
+            state: components["schemas"]["CouponStateInput"];
+            summary: string;
+            /** @description Taka taken off across its orders */
+            saved: number;
+            createdAt: string;
+        };
+        CouponDetailInput: {
+            id: number;
+            code: string;
+            description: string | null;
+            type: components["schemas"]["CouponTypeInput"];
+            value: number;
+            maxDiscount: number | null;
+            minSubtotal: number;
+            startsAt: string | null;
+            endsAt: string | null;
+            usageLimit: number | null;
+            perPhoneLimit: number;
+            firstOrderOnly: boolean;
+            active: boolean;
+            usedCount: number;
+            state: components["schemas"]["CouponStateInput"];
+            summary: string;
+            /** @description Taka taken off across its orders */
+            saved: number;
+            createdAt: string;
+            /** @description Total of the orders that used it */
+            orderTotal: number;
+            redemptions: {
+                orderNo: string;
+                phone: string;
+                amount: number;
+                orderTotal: number;
+                status: string;
+                at: string;
+            }[];
+        };
+        /** @enum {string} */
+        ReviewStatusInput: "pending" | "approved" | "rejected";
+        AdminReviewInput: {
+            id: number;
+            status: components["schemas"]["ReviewStatusInput"];
+            rating: number;
+            name: string;
+            city: string | null;
+            body: string;
+            images: string[];
+            product: {
+                id: number;
+                name: string;
+                slug: string;
+            };
+            orderNo: string | null;
+            phone: string | null;
+            moderatedBy: string | null;
+            moderatedAt: string | null;
+            createdAt: string;
+        };
+        AdminReviewListInput: {
+            items: components["schemas"]["AdminReviewInput"][];
+            total: number;
+            page: number;
+            limit: number;
+            counts: {
+                pending: number;
+                approved: number;
+                rejected: number;
+            };
+        };
+        HeroContentInput: {
+            /** @description Small line above the headline */
+            eyebrow: string;
+            /** @description Headline; wrap words in *stars* to highlight them */
+            title: string;
+            text: string;
+            primary: {
+                label: string;
+                href: string;
+            };
+            secondary: {
+                label: string;
+                href: string;
+            } | null;
+            /**
+             * Format: date-time
+             * @description When the sale ends; the countdown is hidden when empty or past
+             */
+            countdownEnds: string | null;
+        };
+        PromoTileInput: {
+            /** @description Label on the tile, e.g. "Up to 25% Off" */
+            tag: string;
+            /** @enum {string} */
+            tagStyle: "gold" | "red";
+            title: string;
+            text: string;
+            buttonLabel: string;
+            href: string;
+            imageUrl: string;
+        };
+        /** @enum {string} */
+        HomeSectionKeyInput: "hero" | "trust" | "categories" | "bestsellers" | "promos" | "new-arrivals" | "budget" | "story" | "reviews" | "faq" | "newsletter";
+        FaqItemInput: {
+            q: string;
+            a: string;
+        };
+        StoreContentInput: {
+            hero: components["schemas"]["HeroContentInput"];
+            promos: components["schemas"]["PromoTileInput"][];
+            /** @description Homepage sections in display order */
+            sections: {
+                key: components["schemas"]["HomeSectionKeyInput"];
+                visible: boolean;
+            }[];
+            /** @description Placeholders such as {hotline} are already filled in */
+            faq: components["schemas"]["FaqItemInput"][];
+        };
+        StorePageInput: {
+            /** @enum {string} */
+            slug: "about" | "privacy" | "terms" | "refund-policy";
+            title: string;
+            /** @description Markdown subset: ## headings, paragraphs, - lists, **bold**, [links](/path) */
+            body: string;
+            /** @description Null until staff first save the page */
+            updatedAt: string | null;
+        };
+        AdminContentInput: {
+            hero: components["schemas"]["HeroContentInput"];
+            promos: components["schemas"]["PromoTileInput"][];
+            homepage_sections: {
+                key: components["schemas"]["HomeSectionKeyInput"];
+                visible: boolean;
+            }[];
+            faq: components["schemas"]["FaqItemInput"][];
+            /** @description Per block; null means the default is showing */
+            updatedAt: {
+                [key: string]: string | null;
+            };
+            /** @description Placeholders allowed in FAQ answers */
+            faqTokens: string[];
+        };
+        AdminPageSummaryInput: {
+            /** @enum {string} */
+            slug: "about" | "privacy" | "terms" | "refund-policy";
+            title: string;
+            updatedAt: string | null;
+            /** @description False while the page has headings only */
+            filledIn: boolean;
+        };
+        AdminPageInput: components["schemas"]["StorePageInput"];
+        UploadedImageInput: {
+            url: string;
+        };
+        SectionProductInput: {
+            id: number;
+            name: string;
+            slug: string;
+            image: string | null;
+            /**
+             * @description Only active products show on the store
+             * @enum {string}
+             */
+            status: "draft" | "active" | "archived";
+        };
+        SectionProductsInput: {
+            bestsellers: components["schemas"]["SectionProductInput"][];
+            "new-arrivals": components["schemas"]["SectionProductInput"][];
         };
         AdminOrderRowInput: {
             orderNo: string;
@@ -5832,6 +8075,7 @@ export interface components {
             subtotal: number;
             /** @description Whole taka */
             discount: number;
+            couponCode: string | null;
             /** @description Whole taka */
             deliveryFee: number;
             /** @description Whole taka */
@@ -5885,15 +8129,89 @@ export interface components {
             /** @description Whole taka */
             subtotal: number;
             /** @description Whole taka */
-            deliveryFee: number;
-            /** @description Whole taka */
+            discount: number;
+            /** @description Null until an area is given */
+            deliveryFee: number | null;
+            /** @description Includes the delivery fee once an area is given */
             total: number;
             freeDelivery: boolean;
+            /** @description The coupon applied, if the one sent is valid */
+            coupon: {
+                code: string;
+                /** @description e.g. "20% off (up to ৳500)" */
+                summary: string;
+                description: string | null;
+                /** @description Whole taka */
+                saved: number;
+            } | null;
+            /** @description Why the coupon sent can't be used (the quote is without it) */
+            couponError?: string;
             zone: {
                 key: string;
                 name: string;
                 estimate: string;
+            } | null;
+        };
+        PublicReviewInput: {
+            id: number;
+            name: string;
+            city: string | null;
+            rating: number;
+            body: string;
+            /** @description Photo URLs (…-1200.webp; swap the suffix for 400 or 800) */
+            images: string[];
+            createdAt: string;
+        };
+        RatingSummaryInput: {
+            average: number | null;
+            count: number;
+            /** @description Approved reviews per star */
+            breakdown: {
+                [key: string]: number;
             };
+        };
+        ProductReviewsInput: {
+            summary: components["schemas"]["RatingSummaryInput"];
+            items: components["schemas"]["PublicReviewInput"][];
+            total: number;
+            page: number;
+            limit: number;
+        };
+        FeaturedReviewsInput: {
+            /** @description Across every approved review in the store */
+            average: number | null;
+            count: number;
+            items: {
+                id: number;
+                name: string;
+                city: string | null;
+                rating: number;
+                body: string;
+                /** @description Photo URLs (…-1200.webp; swap the suffix for 400 or 800) */
+                images: string[];
+                createdAt: string;
+                product: {
+                    slug: string;
+                    name: string;
+                };
+            }[];
+        };
+        ReviewableOrderInput: {
+            orderNo: string;
+            /** @description e.g. "Rahima B." — shoppers can change it */
+            suggestedName: string;
+            items: {
+                slug: string;
+                name: string;
+                label: string;
+                image: components["schemas"]["ImageInput"] | null;
+                reviewed: boolean;
+            }[];
+        };
+        ReviewSubmittedInput: {
+            id: number;
+            /** @enum {string} */
+            status: "pending";
         };
         DeliveryZoneInput: {
             key: string;
@@ -5946,7 +8264,7 @@ export interface components {
             email: string;
             name: string;
             role: components["schemas"]["AdminRole"];
-            permissions: ("orders:read" | "orders:write" | "customers:read" | "customers:write" | "products:read" | "products:write" | "inventory:write" | "settings:write" | "staff:manage" | "audit:read")[];
+            permissions: ("orders:read" | "orders:write" | "customers:read" | "customers:write" | "products:read" | "products:write" | "inventory:write" | "coupons:write" | "content:write" | "settings:write" | "staff:manage" | "audit:read")[];
         };
         AdminLoginResult: {
             /** @enum {string} */
@@ -6094,6 +8412,9 @@ export interface components {
             /** @description Whole taka */
             subtotal: number;
             /** @description Whole taka */
+            discount: number;
+            couponCode: string | null;
+            /** @description Whole taka */
             deliveryFee: number;
             /** @description Whole taka */
             total: number;
@@ -6114,6 +8435,9 @@ export interface components {
             }[];
             /** @description Whole taka */
             subtotal: number;
+            /** @description Whole taka */
+            discount: number;
+            couponCode: string | null;
             /** @description Whole taka */
             deliveryFee: number;
             /** @description Whole taka */
@@ -6307,6 +8631,11 @@ export interface components {
             compareAtPrice: number | null;
             image: components["schemas"]["Image"] | null;
             inStock: boolean;
+            /** @description From approved reviews; null until the first one */
+            rating: {
+                average: number;
+                count: number;
+            } | null;
             /** @description The variant a one-click "Add to Cart" adds */
             firstVariant: {
                 sku: string;
@@ -6342,6 +8671,11 @@ export interface components {
             compareAtPrice: number | null;
             image: components["schemas"]["Image"] | null;
             inStock: boolean;
+            /** @description From approved reviews; null until the first one */
+            rating: {
+                average: number;
+                count: number;
+            } | null;
             /** @description The variant a one-click "Add to Cart" adds */
             firstVariant: {
                 sku: string;
@@ -6381,6 +8715,193 @@ export interface components {
             statusCode: 404;
             error: string;
             message: string;
+        };
+        /** @enum {string} */
+        CouponType: "percent" | "fixed" | "free_delivery";
+        /** @enum {string} */
+        CouponState: "active" | "scheduled" | "expired" | "used_up" | "disabled";
+        AdminCoupon: {
+            id: number;
+            code: string;
+            description: string | null;
+            type: components["schemas"]["CouponType"];
+            value: number;
+            maxDiscount: number | null;
+            minSubtotal: number;
+            startsAt: string | null;
+            endsAt: string | null;
+            usageLimit: number | null;
+            perPhoneLimit: number;
+            firstOrderOnly: boolean;
+            active: boolean;
+            usedCount: number;
+            state: components["schemas"]["CouponState"];
+            summary: string;
+            /** @description Taka taken off across its orders */
+            saved: number;
+            createdAt: string;
+        };
+        CouponDetail: {
+            id: number;
+            code: string;
+            description: string | null;
+            type: components["schemas"]["CouponType"];
+            value: number;
+            maxDiscount: number | null;
+            minSubtotal: number;
+            startsAt: string | null;
+            endsAt: string | null;
+            usageLimit: number | null;
+            perPhoneLimit: number;
+            firstOrderOnly: boolean;
+            active: boolean;
+            usedCount: number;
+            state: components["schemas"]["CouponState"];
+            summary: string;
+            /** @description Taka taken off across its orders */
+            saved: number;
+            createdAt: string;
+            /** @description Total of the orders that used it */
+            orderTotal: number;
+            redemptions: {
+                orderNo: string;
+                phone: string;
+                amount: number;
+                orderTotal: number;
+                status: string;
+                at: string;
+            }[];
+        };
+        /** @enum {string} */
+        ReviewStatus: "pending" | "approved" | "rejected";
+        AdminReview: {
+            id: number;
+            status: components["schemas"]["ReviewStatus"];
+            rating: number;
+            name: string;
+            city: string | null;
+            body: string;
+            images: string[];
+            product: {
+                id: number;
+                name: string;
+                slug: string;
+            };
+            orderNo: string | null;
+            phone: string | null;
+            moderatedBy: string | null;
+            moderatedAt: string | null;
+            createdAt: string;
+        };
+        AdminReviewList: {
+            items: components["schemas"]["AdminReview"][];
+            total: number;
+            page: number;
+            limit: number;
+            counts: {
+                pending: number;
+                approved: number;
+                rejected: number;
+            };
+        };
+        HeroContent: {
+            /** @description Small line above the headline */
+            eyebrow: string;
+            /** @description Headline; wrap words in *stars* to highlight them */
+            title: string;
+            text: string;
+            primary: {
+                label: string;
+                href: string;
+            };
+            secondary: {
+                label: string;
+                href: string;
+            } | null;
+            /**
+             * Format: date-time
+             * @description When the sale ends; the countdown is hidden when empty or past
+             */
+            countdownEnds: string | null;
+        };
+        PromoTile: {
+            /** @description Label on the tile, e.g. "Up to 25% Off" */
+            tag: string;
+            /** @enum {string} */
+            tagStyle: "gold" | "red";
+            title: string;
+            text: string;
+            buttonLabel: string;
+            href: string;
+            imageUrl: string;
+        };
+        /** @enum {string} */
+        HomeSectionKey: "hero" | "trust" | "categories" | "bestsellers" | "promos" | "new-arrivals" | "budget" | "story" | "reviews" | "faq" | "newsletter";
+        FaqItem: {
+            q: string;
+            a: string;
+        };
+        StoreContent: {
+            hero: components["schemas"]["HeroContent"];
+            promos: components["schemas"]["PromoTile"][];
+            /** @description Homepage sections in display order */
+            sections: {
+                key: components["schemas"]["HomeSectionKey"];
+                visible: boolean;
+            }[];
+            /** @description Placeholders such as {hotline} are already filled in */
+            faq: components["schemas"]["FaqItem"][];
+        };
+        StorePage: {
+            /** @enum {string} */
+            slug: "about" | "privacy" | "terms" | "refund-policy";
+            title: string;
+            /** @description Markdown subset: ## headings, paragraphs, - lists, **bold**, [links](/path) */
+            body: string;
+            /** @description Null until staff first save the page */
+            updatedAt: string | null;
+        };
+        AdminContent: {
+            hero: components["schemas"]["HeroContent"];
+            promos: components["schemas"]["PromoTile"][];
+            homepage_sections: {
+                key: components["schemas"]["HomeSectionKey"];
+                visible: boolean;
+            }[];
+            faq: components["schemas"]["FaqItem"][];
+            /** @description Per block; null means the default is showing */
+            updatedAt: {
+                [key: string]: string | null;
+            };
+            /** @description Placeholders allowed in FAQ answers */
+            faqTokens: string[];
+        };
+        AdminPageSummary: {
+            /** @enum {string} */
+            slug: "about" | "privacy" | "terms" | "refund-policy";
+            title: string;
+            updatedAt: string | null;
+            /** @description False while the page has headings only */
+            filledIn: boolean;
+        };
+        AdminPage: components["schemas"]["StorePage"];
+        UploadedImage: {
+            url: string;
+        };
+        SectionProduct: {
+            id: number;
+            name: string;
+            slug: string;
+            image: string | null;
+            /**
+             * @description Only active products show on the store
+             * @enum {string}
+             */
+            status: "draft" | "active" | "archived";
+        };
+        SectionProducts: {
+            bestsellers: components["schemas"]["SectionProduct"][];
+            "new-arrivals": components["schemas"]["SectionProduct"][];
         };
         AdminOrderRow: {
             orderNo: string;
@@ -6455,6 +8976,7 @@ export interface components {
             subtotal: number;
             /** @description Whole taka */
             discount: number;
+            couponCode: string | null;
             /** @description Whole taka */
             deliveryFee: number;
             /** @description Whole taka */
@@ -6508,15 +9030,89 @@ export interface components {
             /** @description Whole taka */
             subtotal: number;
             /** @description Whole taka */
-            deliveryFee: number;
-            /** @description Whole taka */
+            discount: number;
+            /** @description Null until an area is given */
+            deliveryFee: number | null;
+            /** @description Includes the delivery fee once an area is given */
             total: number;
             freeDelivery: boolean;
+            /** @description The coupon applied, if the one sent is valid */
+            coupon: {
+                code: string;
+                /** @description e.g. "20% off (up to ৳500)" */
+                summary: string;
+                description: string | null;
+                /** @description Whole taka */
+                saved: number;
+            } | null;
+            /** @description Why the coupon sent can't be used (the quote is without it) */
+            couponError?: string;
             zone: {
                 key: string;
                 name: string;
                 estimate: string;
+            } | null;
+        };
+        PublicReview: {
+            id: number;
+            name: string;
+            city: string | null;
+            rating: number;
+            body: string;
+            /** @description Photo URLs (…-1200.webp; swap the suffix for 400 or 800) */
+            images: string[];
+            createdAt: string;
+        };
+        RatingSummary: {
+            average: number | null;
+            count: number;
+            /** @description Approved reviews per star */
+            breakdown: {
+                [key: string]: number;
             };
+        };
+        ProductReviews: {
+            summary: components["schemas"]["RatingSummary"];
+            items: components["schemas"]["PublicReview"][];
+            total: number;
+            page: number;
+            limit: number;
+        };
+        FeaturedReviews: {
+            /** @description Across every approved review in the store */
+            average: number | null;
+            count: number;
+            items: {
+                id: number;
+                name: string;
+                city: string | null;
+                rating: number;
+                body: string;
+                /** @description Photo URLs (…-1200.webp; swap the suffix for 400 or 800) */
+                images: string[];
+                createdAt: string;
+                product: {
+                    slug: string;
+                    name: string;
+                };
+            }[];
+        };
+        ReviewableOrder: {
+            orderNo: string;
+            /** @description e.g. "Rahima B." — shoppers can change it */
+            suggestedName: string;
+            items: {
+                slug: string;
+                name: string;
+                label: string;
+                image: components["schemas"]["Image"] | null;
+                reviewed: boolean;
+            }[];
+        };
+        ReviewSubmitted: {
+            id: number;
+            /** @enum {string} */
+            status: "pending";
         };
         DeliveryZone: {
             key: string;
