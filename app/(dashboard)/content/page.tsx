@@ -89,7 +89,10 @@ export default async function ContentPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-sm font-medium">Best sellers</CardTitle>
-              <CardDescription>Up to 12 products, in this order.</CardDescription>
+              <CardDescription>
+                Up to 12 products, in this order. With none picked, the store shows the best-selling products of the
+                last 90 days, topped up in featured order while there are few sales.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <SectionProductsEditor
@@ -102,7 +105,9 @@ export default async function ContentPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-sm font-medium">New arrivals</CardTitle>
-              <CardDescription>Up to 12 products, in this order.</CardDescription>
+              <CardDescription>
+                Up to 12 products, in this order. With none picked, the store shows the 8 newest products.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <SectionProductsEditor

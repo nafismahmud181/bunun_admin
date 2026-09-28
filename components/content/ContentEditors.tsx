@@ -528,7 +528,7 @@ export function SectionProductsEditor({
   return (
     <div className="grid gap-2">
       {list.length === 0 && (
-        <p className="text-sm text-muted-foreground">No products: the section is hidden on the store.</p>
+        <p className="text-sm text-muted-foreground">None picked: the store fills this section automatically.</p>
       )}
       <ol className="divide-y rounded-lg border">
         {list.map((p, i) => (
