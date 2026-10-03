@@ -59,11 +59,12 @@ app/
   (dashboard)/staff/         Owner only: invite (one-time password), role, disable, reset, sign out everywhere
   (dashboard)/account/       Change your own password (click your name in the header)
   (dashboard)/audit/         Audit log with person, action and date filters
+  (dashboard)/reports/       Reports for any date range: sales chart, products, categories, channels, payments, couriers, coupons; CSV downloads
   (dashboard)/coupons/       Coupons: list by state, create, edit or disable, orders that used each one
   (dashboard)/reviews/       Review approval queue (waiting / approved / rejected) with customer photos
   (dashboard)/content/       CMS: sale banner and countdown, promo tiles, homepage section order, best sellers and new arrivals, FAQ
   (dashboard)/content/pages/[slug]/  Store page editor (about, privacy, terms, refund policy) with a live preview
-  (dashboard)/orders/        List (status tabs, search, dates, CSV export), order detail, server actions
+  (dashboard)/orders/        List (status tabs, search, dates, CSV export), order detail (courier booking and tracking, delivery-risk label), server actions
   (dashboard)/products/      List with filters, new product, editor (details, sizes and prices, photos, publish/archive/duplicate)
   (dashboard)/categories/    Rename, Bangla name, image, show/hide, reorder, add, delete empty, and Options: what each product option records (e.g. Dimensions, Colour, shipping weight)
   (dashboard)/inventory/     Stock per variant, low-stock filter, adjust/stocktake dialog, stock history

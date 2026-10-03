@@ -53,3 +53,40 @@ export async function editOrderAction(
   });
   return error ? { ok: false, error: errorMessage(error) } : done(orderNo);
 }
+
+export async function bookShipmentAction(
+  orderNo: string,
+  input: { weightKg?: number; note?: string },
+): Promise<ActionResult> {
+  await requireAdmin('orders:write');
+  const { error } = await (
+    await adminApi()
+  ).POST('/api/v1/admin/orders/{orderNo}/shipments', {
+    params: { path: { orderNo }, header: {} },
+    body: {
+      ...(input.weightKg && { weightKg: input.weightKg }),
+      ...(input.note?.trim() && { note: input.note.trim() }),
+    },
+  });
+  return error ? { ok: false, error: errorMessage(error) } : done(orderNo);
+}
+
+export async function refreshShipmentAction(orderNo: string, shipmentId: number): Promise<ActionResult> {
+  await requireAdmin('orders:read');
+  const { error } = await (
+    await adminApi()
+  ).POST('/api/v1/admin/orders/{orderNo}/shipments/{shipmentId}/refresh', {
+    params: { path: { orderNo, shipmentId }, header: {} },
+  });
+  return error ? { ok: false, error: errorMessage(error) } : done(orderNo);
+}
+
+export async function cancelShipmentAction(orderNo: string, shipmentId: number): Promise<ActionResult> {
+  await requireAdmin('orders:write');
+  const { error } = await (
+    await adminApi()
+  ).POST('/api/v1/admin/orders/{orderNo}/shipments/{shipmentId}/cancel', {
+    params: { path: { orderNo, shipmentId }, header: {} },
+  });
+  return error ? { ok: false, error: errorMessage(error) } : done(orderNo);
+}

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import CourierCard from '@/components/orders/CourierCard';
 import EditOrderDialog from '@/components/orders/EditOrderDialog';
 import NoteForm from '@/components/orders/NoteForm';
 import StatusActions from '@/components/orders/StatusActions';
@@ -15,6 +16,26 @@ import { adminApi, requireAdmin } from '@/lib/session';
 export async function generateMetadata({ params }: PageProps<'/orders/[orderNo]'>): Promise<Metadata> {
   return { title: (await params).orderNo };
 }
+
+/** Delivery record of this phone number with the store (returned parcels cost both delivery ways). */
+const RISK = {
+  new: { label: 'New customer', hint: 'No finished orders yet: confirm by phone first.', className: 'bg-muted' },
+  good: {
+    label: 'Reliable',
+    hint: 'Most of their orders were delivered.',
+    className: 'bg-emerald-50 text-emerald-900',
+  },
+  watch: {
+    label: 'Watch',
+    hint: 'Some orders came back. Confirm carefully.',
+    className: 'bg-amber-50 text-amber-900',
+  },
+  high: {
+    label: 'High risk',
+    hint: 'Orders often returned. Consider asking for the delivery fee in advance.',
+    className: 'bg-red-50 text-red-900',
+  },
+} as const;
 
 const SMS_LABEL: Record<string, string> = {
   order_placed: 'Order received',
@@ -41,8 +62,17 @@ export default async function OrderPage({ params }: PageProps<'/orders/[orderNo]
   const canWrite = admin.permissions.includes('orders:write');
   const locations = canWrite && o.editable ? ((await apiClient().GET('/api/v1/locations')).data ?? []) : [];
   const c = o.customer;
-  const finished = c.delivered + c.returned;
-  const successRate = finished ? Math.round((c.delivered / finished) * 100) : null;
+  const api = await adminApi();
+  const booked = o.shipments.some((s) => s.state !== 'cancelled');
+  const [{ data: courier }, parcel] = await Promise.all([
+    api.GET('/api/v1/admin/courier', { params: { header: {} } }),
+    canWrite && !booked && (o.status === 'confirmed' || o.status === 'processing')
+      ? api
+          .GET('/api/v1/admin/orders/{orderNo}/parcel', { params: { path: { orderNo: o.orderNo }, header: {} } })
+          .then((r) => r.data ?? null)
+      : null,
+  ]);
+  const risk = RISK[c.risk.level];
 
   return (
     <div className="space-y-4">
@@ -111,7 +141,7 @@ export default async function OrderPage({ params }: PageProps<'/orders/[orderNo]
                 <TableBody>
                   {o.items.map((i) => (
                     <TableRow key={i.sku}>
-                      <TableCell>
+                      <TableCell className="min-w-48 whitespace-normal">
                         {i.name} <span className="text-muted-foreground">· {i.label}</span>
                       </TableCell>
                       <TableCell className="font-mono text-xs">{i.sku}</TableCell>
@@ -210,10 +240,28 @@ export default async function OrderPage({ params }: PageProps<'/orders/[orderNo]
                 {c.orders} order{c.orders === 1 ? '' : 's'} · {c.delivered} delivered · {c.cancelled} cancelled ·{' '}
                 {c.returned} returned
               </p>
-              <p className="text-muted-foreground">
-                {successRate === null ? 'No completed deliveries yet' : `${successRate}% delivery success`} · spent{' '}
-                {taka(c.spent)}
+              <p className="text-muted-foreground">Spent {taka(c.spent)} on delivered orders</p>
+              <p className={`mt-2 rounded-md px-2 py-1.5 text-xs ${risk.className}`}>
+                <b>{risk.label}</b>
+                {c.risk.successRate !== null && ` · ${c.risk.successRate}% of finished orders delivered`}
+                <span className="block">{risk.hint}</span>
               </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-medium">Courier</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CourierCard
+                orderNo={o.orderNo}
+                status={o.status}
+                shipments={o.shipments}
+                courier={courier ?? null}
+                parcel={parcel}
+                canWrite={canWrite}
+              />
             </CardContent>
           </Card>
 

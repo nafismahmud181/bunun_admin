@@ -95,6 +95,7 @@ export const MODULES: AdminModule[] = [
     label: 'Reports',
     summary: 'Sales by day, product and category; payment and courier performance.',
     permission: 'audit:read',
+    built: true,
   },
   {
     slug: 'audit',

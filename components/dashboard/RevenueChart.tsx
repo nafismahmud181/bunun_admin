@@ -22,8 +22,20 @@ function niceMax(v: number) {
   return [1, 2, 5, 10].map((m) => m * p).find((m) => m >= v)!;
 }
 
-export default function RevenueChart({ days }: { days: Day[] }) {
+const todayInDhaka = () => new Date(Date.now() + 6 * 3_600_000).toISOString().slice(0, 10);
+
+/**
+ * Revenue per day (or per month). Used by the dashboard (last 30 days) and the Reports page (any
+ * range); `bucket` says what one column is.
+ */
+export default function RevenueChart({ days, bucket = 'day' }: { days: Day[]; bucket?: 'day' | 'month' }) {
   const [hover, setHover] = useState<number | null>(null);
+  const monthly = bucket === 'month';
+  const short = (iso: string) =>
+    label(iso, monthly ? { month: 'short', year: '2-digit' } : { day: 'numeric', month: 'short' });
+  const long = (iso: string) =>
+    label(iso, monthly ? { month: 'long', year: 'numeric' } : { weekday: 'short', day: 'numeric', month: 'short' });
+  const endsToday = !monthly && days.at(-1)?.day === todayInDhaka();
   const max = niceMax(Math.max(...days.map((d) => d.revenue)));
   const n = days.length;
   const slot = 100 / n; // percent of the width per day
@@ -55,7 +67,7 @@ export default function RevenueChart({ days }: { days: Day[] }) {
           preserveAspectRatio="none"
           className="block h-[202px] w-full"
           role="img"
-          aria-label={`Revenue per day for the last 30 days, ${taka(total)} in total`}
+          aria-label={`Revenue per ${monthly ? 'month' : 'day'}, ${taka(total)} in total`}
         >
           {days.map((d, i) => {
             const x = i * slot + (slot - barW) / 2;
@@ -83,7 +95,7 @@ export default function RevenueChart({ days }: { days: Day[] }) {
                   onFocus={() => setHover(i)}
                   onBlur={() => setHover(null)}
                   tabIndex={0}
-                  aria-label={`${label(d.day, { day: 'numeric', month: 'short' })}: ${taka(d.revenue)}, ${d.orders} orders`}
+                  aria-label={`${short(d.day)}: ${taka(d.revenue)}, ${d.orders} orders`}
                 />
               </g>
             );
@@ -99,19 +111,19 @@ export default function RevenueChart({ days }: { days: Day[] }) {
             vectorEffect="non-scaling-stroke"
           />
         </svg>
-        {/* Date labels every 7 days counting back from today (so none crowd "Today"), in muted ink. */}
+        {/* Labels every 7 days (or every month) counting back from the end, so none crowd the last one. */}
         <div
           className="pointer-events-none absolute inset-x-0 text-[11px] text-muted-foreground"
           style={{ top: H + 4 }}
         >
           {days.map((d, i) =>
-            (n - 1 - i) % 7 === 0 ? (
+            (n - 1 - i) % (monthly ? Math.max(1, Math.ceil(n / 8)) : n <= 35 ? 7 : Math.ceil(n / 6)) === 0 ? (
               <span
                 key={d.day}
                 className="absolute -translate-x-1/2 whitespace-nowrap"
                 style={{ left: `${(i + 0.5) * slot}%` }}
               >
-                {i === n - 1 ? 'Today' : label(d.day, { day: 'numeric', month: 'short' })}
+                {i === n - 1 && endsToday ? 'Today' : short(d.day)}
               </span>
             ) : null,
           )}
@@ -121,9 +133,7 @@ export default function RevenueChart({ days }: { days: Day[] }) {
             className="pointer-events-none absolute z-10 -translate-x-1/2 rounded-md border bg-popover px-2.5 py-1.5 text-xs shadow-md"
             style={{ left: `${Math.min(92, Math.max(8, (hover + 0.5) * slot))}%`, top: Math.max(0, y(h.revenue) - 52) }}
           >
-            <div className="font-medium text-foreground">
-              {label(h.day, { weekday: 'short', day: 'numeric', month: 'short' })}
-            </div>
+            <div className="font-medium text-foreground">{long(h.day)}</div>
             <div className="text-muted-foreground">
               {taka(h.revenue)} · {h.orders} order{h.orders === 1 ? '' : 's'}
             </div>
@@ -135,7 +145,7 @@ export default function RevenueChart({ days }: { days: Day[] }) {
         <table className="mt-2 w-full text-left text-xs">
           <thead>
             <tr className="text-muted-foreground">
-              <th className="py-1 font-medium">Day</th>
+              <th className="py-1 font-medium">{monthly ? 'Month' : 'Day'}</th>
               <th className="py-1 text-right font-medium">Orders</th>
               <th className="py-1 text-right font-medium">Revenue</th>
             </tr>
@@ -143,7 +153,7 @@ export default function RevenueChart({ days }: { days: Day[] }) {
           <tbody>
             {[...days].reverse().map((d) => (
               <tr key={d.day} className="border-t">
-                <td className="py-1">{label(d.day, { weekday: 'short', day: 'numeric', month: 'short' })}</td>
+                <td className="py-1">{long(d.day)}</td>
                 <td className="py-1 text-right tabular-nums">{d.orders}</td>
                 <td className="py-1 text-right tabular-nums">{taka(d.revenue)}</td>
               </tr>
