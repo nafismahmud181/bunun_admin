@@ -5727,6 +5727,160 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/profit-plan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Profit planner inputs, the typical defaults and the last 90 days of real figures */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProfitPlanReply"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        /** Save the profit planner inputs */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ProfitPlanInput"];
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProfitPlanReply"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/audit": {
         parameters: {
             query?: never;
@@ -8543,6 +8697,81 @@ export interface components {
                 averageDays: number | null;
             }[];
         };
+        ProfitPlanInput: {
+            /** @description One-time costs before the first sale */
+            startup: {
+                label: string;
+                /** @description Whole or fractional taka */
+                amount: number;
+                /** @default  */
+                note: string;
+            }[];
+            /** @description Fixed costs paid every month */
+            monthly: {
+                label: string;
+                /** @description Whole or fractional taka */
+                amount: number;
+                /** @default  */
+                note: string;
+            }[];
+            perOrder: {
+                /** @description Items in an order after discounts, without delivery */
+                averageItemValue: number;
+                /** @description Percent, e.g. 60 for 60% */
+                insideDhakaShare: number;
+                /** @description Delivery charged to the customer inside Dhaka */
+                chargeInside: number;
+                chargeOutside: number;
+                /** @description Orders that pay no delivery */
+                freeDeliveryShare: number;
+                /** @description What the courier charges you inside Dhaka */
+                courierFeeInside: number;
+                courierFeeOutside: number;
+                /** @description Courier COD charge on cash collected */
+                codChargePct: number;
+                packaging: number;
+                smsPerOrder: number;
+                smsPrice: number;
+                /** @description Parcels refused or returned */
+                returnRate: number;
+                /** @description Return charge as a share of the delivery fee */
+                returnChargePct: number;
+                /** @description Online-payment fee; 0 while cash on delivery only */
+                paymentFeePct: number;
+            };
+            /** @description Three product-margin scenarios: (price − cost) ÷ price */
+            margins: number[];
+            /** @description Planned orders, months 1–12 */
+            orders: number[];
+        };
+        StoreActualsInput: {
+            from: string;
+            to: string;
+            days: number;
+            /** @description Orders placed, without cancelled, returned and refunded ones */
+            orders: number;
+            ordersPerMonth: number | null;
+            averageItemValue: number | null;
+            insideDhakaShare: number | null;
+            freeDeliveryShare: number | null;
+            /** @description Returned ÷ (delivered + returned), %; null with nothing finished yet */
+            returnRate: number | null;
+            /** @description Delivery fee of the inside-Dhaka zone */
+            chargeInside: number | null;
+            /** @description Delivery fee of the outside-Dhaka zone */
+            chargeOutside: number | null;
+            /** @description Average live courier fee on parcels inside Dhaka */
+            courierFeeInside: number | null;
+            courierFeeOutside: number | null;
+        };
+        ProfitPlanReplyInput: {
+            plan: components["schemas"]["ProfitPlanInput"];
+            defaults: components["schemas"]["ProfitPlanInput"];
+            /** @description False until someone saves; `plan` is then the defaults */
+            saved: boolean;
+            updatedAt: string | null;
+            actuals: components["schemas"]["StoreActualsInput"];
+        };
         ImageInput: {
             url: string;
             alt: string | null;
@@ -9647,6 +9876,81 @@ export interface components {
                 /** @description Booking to delivery */
                 averageDays: number | null;
             }[];
+        };
+        ProfitPlan: {
+            /** @description One-time costs before the first sale */
+            startup: {
+                label: string;
+                /** @description Whole or fractional taka */
+                amount: number;
+                /** @default  */
+                note: string;
+            }[];
+            /** @description Fixed costs paid every month */
+            monthly: {
+                label: string;
+                /** @description Whole or fractional taka */
+                amount: number;
+                /** @default  */
+                note: string;
+            }[];
+            perOrder: {
+                /** @description Items in an order after discounts, without delivery */
+                averageItemValue: number;
+                /** @description Percent, e.g. 60 for 60% */
+                insideDhakaShare: number;
+                /** @description Delivery charged to the customer inside Dhaka */
+                chargeInside: number;
+                chargeOutside: number;
+                /** @description Orders that pay no delivery */
+                freeDeliveryShare: number;
+                /** @description What the courier charges you inside Dhaka */
+                courierFeeInside: number;
+                courierFeeOutside: number;
+                /** @description Courier COD charge on cash collected */
+                codChargePct: number;
+                packaging: number;
+                smsPerOrder: number;
+                smsPrice: number;
+                /** @description Parcels refused or returned */
+                returnRate: number;
+                /** @description Return charge as a share of the delivery fee */
+                returnChargePct: number;
+                /** @description Online-payment fee; 0 while cash on delivery only */
+                paymentFeePct: number;
+            };
+            /** @description Three product-margin scenarios: (price − cost) ÷ price */
+            margins: number[];
+            /** @description Planned orders, months 1–12 */
+            orders: number[];
+        };
+        StoreActuals: {
+            from: string;
+            to: string;
+            days: number;
+            /** @description Orders placed, without cancelled, returned and refunded ones */
+            orders: number;
+            ordersPerMonth: number | null;
+            averageItemValue: number | null;
+            insideDhakaShare: number | null;
+            freeDeliveryShare: number | null;
+            /** @description Returned ÷ (delivered + returned), %; null with nothing finished yet */
+            returnRate: number | null;
+            /** @description Delivery fee of the inside-Dhaka zone */
+            chargeInside: number | null;
+            /** @description Delivery fee of the outside-Dhaka zone */
+            chargeOutside: number | null;
+            /** @description Average live courier fee on parcels inside Dhaka */
+            courierFeeInside: number | null;
+            courierFeeOutside: number | null;
+        };
+        ProfitPlanReply: {
+            plan: components["schemas"]["ProfitPlan"];
+            defaults: components["schemas"]["ProfitPlan"];
+            /** @description False until someone saves; `plan` is then the defaults */
+            saved: boolean;
+            updatedAt: string | null;
+            actuals: components["schemas"]["StoreActuals"];
         };
         Image: {
             url: string;
