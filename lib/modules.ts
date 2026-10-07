@@ -105,6 +105,13 @@ export const MODULES: AdminModule[] = [
     built: true,
   },
   {
+    slug: 'product-profit',
+    label: 'Product profit',
+    summary: 'What one product costs you and how much you keep when you sell it.',
+    permission: 'settings:write',
+    built: true,
+  },
+  {
     slug: 'audit',
     label: 'Audit log',
     summary: 'Every admin change and sign-in, with filters.',

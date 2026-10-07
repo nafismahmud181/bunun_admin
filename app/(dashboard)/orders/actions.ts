@@ -72,7 +72,7 @@ export async function bookShipmentAction(
 }
 
 export async function refreshShipmentAction(orderNo: string, shipmentId: number): Promise<ActionResult> {
-  await requireAdmin('orders:read');
+  await requireAdmin('orders:write');
   const { error } = await (
     await adminApi()
   ).POST('/api/v1/admin/orders/{orderNo}/shipments/{shipmentId}/refresh', {

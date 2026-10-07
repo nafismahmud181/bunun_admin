@@ -8,7 +8,9 @@ type Cell = string | number | null;
 export default function CsvButton({ filename, header, rows }: { filename: string; header: string[]; rows: Cell[][] }) {
   const download = () => {
     const esc = (v: Cell) => {
-      const s = v === null ? '' : String(v);
+      // A text cell starting with = + - @ would run as a formula in Excel; a leading ' keeps it text.
+      const raw = v === null ? '' : String(v);
+      const s = typeof v === 'string' && /^[=+\-@\t\r]/.test(raw) ? `'${raw}` : raw;
       return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
     };
     const csv = [header, ...rows].map((r) => r.map(esc).join(',')).join('\r\n');

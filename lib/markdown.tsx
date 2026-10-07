@@ -9,7 +9,8 @@ import type { ReactNode } from 'react';
 //   **bold**        [link text](/shop) or [email us](mailto:hello@example.com)
 //   Blank lines separate paragraphs; single line breaks are kept.
 
-const SAFE_HREF = /^(\/(?!\/)|https:\/\/|mailto:|tel:)/;
+// Paths may not start with // or /\ (browsers read both as a link to another site).
+const SAFE_HREF = /^(\/(?![/\\])|https:\/\/|mailto:|tel:)/;
 
 function inline(text: string, key: string): ReactNode[] {
   const out: ReactNode[] = [];

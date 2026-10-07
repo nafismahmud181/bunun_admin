@@ -51,5 +51,6 @@ export async function submitCode(prev: LoginState, form: FormData): Promise<Logi
 export async function signOut() {
   await (await adminApi()).POST('/api/v1/admin/auth/logout', { params: { header: {} } }).catch(() => {});
   await clearCookie(SESSION_COOKIE);
+  await clearCookie(PENDING_COOKIE);
   redirect('/login');
 }

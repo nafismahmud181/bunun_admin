@@ -539,8 +539,6 @@ export interface paths {
                     /** @description Without it, the quote has no delivery fee yet */
                     areaId?: number;
                     coupon?: string;
-                    /** @description With a coupon: also checks its per-phone and first-order rules */
-                    phone?: string;
                 };
                 header?: {
                     "x-cart-token"?: string;
@@ -5881,6 +5879,188 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/product-costs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Products with each size’s price and cost */
+        get: {
+            parameters: {
+                query?: {
+                    q?: string;
+                    /** @description Just this product */
+                    productId?: number;
+                    /** @description Only products with a size whose cost is not entered */
+                    missing?: "true" | "false";
+                    page?: number;
+                    limit?: number;
+                };
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProductCostList"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/product-costs/{variantId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Save what one unit of a product size costs (no lines clears it) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path: {
+                    variantId: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["VariantCostBodyInput"];
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            cost: components["schemas"]["VariantCost"] | null;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/audit": {
         parameters: {
             query?: never;
@@ -8772,6 +8952,42 @@ export interface components {
             updatedAt: string | null;
             actuals: components["schemas"]["StoreActualsInput"];
         };
+        VariantCostBodyInput: {
+            /** @description Empty clears the cost */
+            lines: {
+                label: string;
+                amount: number;
+            }[];
+        };
+        VariantCostInput: {
+            lines: {
+                label: string;
+                amount: number;
+            }[];
+            unitCost: number;
+            updatedAt: string;
+        };
+        CostedVariantInput: {
+            id: number;
+            label: string;
+            sku: string;
+            price: number;
+            cost: components["schemas"]["VariantCostInput"] | null;
+        };
+        CostedProductInput: {
+            id: number;
+            name: string;
+            image: string | null;
+            category: string;
+            status: string;
+            variants: components["schemas"]["CostedVariantInput"][];
+        };
+        ProductCostListInput: {
+            items: components["schemas"]["CostedProductInput"][];
+            total: number;
+            page: number;
+            limit: number;
+        };
         ImageInput: {
             url: string;
             alt: string | null;
@@ -9951,6 +10167,42 @@ export interface components {
             saved: boolean;
             updatedAt: string | null;
             actuals: components["schemas"]["StoreActuals"];
+        };
+        VariantCostBody: {
+            /** @description Empty clears the cost */
+            lines: {
+                label: string;
+                amount: number;
+            }[];
+        };
+        VariantCost: {
+            lines: {
+                label: string;
+                amount: number;
+            }[];
+            unitCost: number;
+            updatedAt: string;
+        };
+        CostedVariant: {
+            id: number;
+            label: string;
+            sku: string;
+            price: number;
+            cost: components["schemas"]["VariantCost"] | null;
+        };
+        CostedProduct: {
+            id: number;
+            name: string;
+            image: string | null;
+            category: string;
+            status: string;
+            variants: components["schemas"]["CostedVariant"][];
+        };
+        ProductCostList: {
+            items: components["schemas"]["CostedProduct"][];
+            total: number;
+            page: number;
+            limit: number;
         };
         Image: {
             url: string;
