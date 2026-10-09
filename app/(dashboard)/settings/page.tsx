@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import BlockList from '@/components/settings/BlockList';
+import DangerZone from '@/components/settings/DangerZone';
 import SettingsForm from '@/components/settings/SettingsForm';
 import { AreaZones, ZonesTable } from '@/components/settings/ZonesEditor';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +10,7 @@ import { adminApi, requireAdmin } from '@/lib/session';
 export const metadata: Metadata = { title: 'Settings' };
 
 export default async function SettingsPage() {
-  await requireAdmin('settings:write');
+  const admin = await requireAdmin('settings:write');
   const api = await adminApi();
   const h = { params: { header: {} } };
   const [{ data: settings }, { data: zones }, { data: blocked }, { data: locations }] = await Promise.all([
@@ -64,6 +65,17 @@ export default async function SettingsPage() {
           <BlockList items={blocked} />
         </CardContent>
       </Card>
+      {admin.permissions.includes('data:reset') && (
+        <Card className="border-destructive/50">
+          <CardHeader>
+            <CardTitle className="text-sm font-medium text-destructive">Danger zone</CardTitle>
+            <CardDescription>Delete orders, customers and other test data, for example before launch.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DangerZone />
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

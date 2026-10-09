@@ -5725,6 +5725,114 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/data-reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Delete orders, customers, coupons, the audit log or admin sessions (needs a fresh two-factor code) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @description Orders with their shipments, SMS, reviews and coupon uses; stock is put back */
+                        orders: boolean;
+                        /** @description Carts, and customers who have no orders left */
+                        customers: boolean;
+                        coupons: boolean;
+                        auditLog: boolean;
+                        /** @description Signs out every other admin session (the caller's stays) */
+                        sessions: boolean;
+                        code: string;
+                        /** @enum {string} */
+                        confirm: "RESET";
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DataResetResult"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                423: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/profit-plan": {
         parameters: {
             query?: never;
@@ -8391,7 +8499,7 @@ export interface components {
             email: string;
             name: string;
             role: components["schemas"]["AdminRoleInput"];
-            permissions: ("orders:read" | "orders:write" | "customers:read" | "customers:write" | "products:read" | "products:write" | "inventory:write" | "coupons:write" | "content:write" | "settings:write" | "staff:manage" | "audit:read")[];
+            permissions: ("orders:read" | "orders:write" | "customers:read" | "customers:write" | "products:read" | "products:write" | "inventory:write" | "coupons:write" | "content:write" | "settings:write" | "staff:manage" | "audit:read" | "data:reset")[];
         };
         AdminLoginResultInput: {
             /** @enum {string} */
@@ -9112,6 +9220,22 @@ export interface components {
             error: string;
             message: string;
         };
+        DataResetResultInput: {
+            deleted: {
+                orders: number;
+                shipments: number;
+                smsMessages: number;
+                reviews: number;
+                customers: number;
+                carts: number;
+                coupons: number;
+                auditEntries: number;
+                sessions: number;
+                /** @description Units of stock put back from deleted orders */
+                stockReturned: number;
+            };
+            orderNumbersRestarted: boolean;
+        };
         /** @enum {string} */
         CouponTypeInput: "percent" | "fixed" | "free_delivery";
         /** @enum {string} */
@@ -9607,7 +9731,7 @@ export interface components {
             email: string;
             name: string;
             role: components["schemas"]["AdminRole"];
-            permissions: ("orders:read" | "orders:write" | "customers:read" | "customers:write" | "products:read" | "products:write" | "inventory:write" | "coupons:write" | "content:write" | "settings:write" | "staff:manage" | "audit:read")[];
+            permissions: ("orders:read" | "orders:write" | "customers:read" | "customers:write" | "products:read" | "products:write" | "inventory:write" | "coupons:write" | "content:write" | "settings:write" | "staff:manage" | "audit:read" | "data:reset")[];
         };
         AdminLoginResult: {
             /** @enum {string} */
@@ -10327,6 +10451,22 @@ export interface components {
             statusCode: 404;
             error: string;
             message: string;
+        };
+        DataResetResult: {
+            deleted: {
+                orders: number;
+                shipments: number;
+                smsMessages: number;
+                reviews: number;
+                customers: number;
+                carts: number;
+                coupons: number;
+                auditEntries: number;
+                sessions: number;
+                /** @description Units of stock put back from deleted orders */
+                stockReturned: number;
+            };
+            orderNumbersRestarted: boolean;
         };
         /** @enum {string} */
         CouponType: "percent" | "fixed" | "free_delivery";

@@ -87,3 +87,24 @@ export async function removeBlockedAction(id: number): Promise<Result> {
   ).DELETE('/api/v1/admin/blocked/{id}', { params: { path: { id }, header: {} } });
   return error ? fail(error) : done();
 }
+
+export type DataResetInput = {
+  orders: boolean;
+  customers: boolean;
+  coupons: boolean;
+  auditLog: boolean;
+  sessions: boolean;
+  code: string;
+  confirm: 'RESET';
+};
+export type DataResetOutcome =
+  { ok: true; result: components['schemas']['DataResetResult'] } | { ok: false; error: string };
+
+/** Danger zone: deletes the chosen test data after a fresh two-factor code (owner only). */
+export async function resetDataAction(input: DataResetInput): Promise<DataResetOutcome> {
+  await requireAdmin('data:reset');
+  const { data, error } = await (await adminApi()).POST('/api/v1/admin/data-reset', { params: h, body: input });
+  if (error || !data) return { ok: false, error: errorMessage(error) };
+  revalidatePath('/', 'layout');
+  return { ok: true, result: data };
+}
