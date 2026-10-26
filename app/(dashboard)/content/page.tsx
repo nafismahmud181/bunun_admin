@@ -46,9 +46,14 @@ export default async function ContentPage() {
             What shoppers see on the homepage and store pages. Changes go live when you save.
           </p>
         </div>
-        <a href={STORE} target="_blank" rel="noreferrer" className="text-sm text-primary hover:underline">
-          Open the store ↗
-        </a>
+        <div className="flex gap-4 text-sm">
+          <Link href="/content/appearance" className="text-primary hover:underline">
+            Colours (Appearance) →
+          </Link>
+          <a href={STORE} target="_blank" rel="noreferrer" className="text-primary hover:underline">
+            Open the store ↗
+          </a>
+        </div>
       </div>
 
       <Card>

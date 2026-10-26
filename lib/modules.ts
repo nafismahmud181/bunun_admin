@@ -65,7 +65,7 @@ export const MODULES: AdminModule[] = [
   {
     slug: 'content',
     label: 'Content',
-    summary: 'Banners, countdown, homepage sections, FAQ, pages.',
+    summary: 'Banners, countdown, homepage sections, FAQ, pages, colours.',
     permission: 'content:write',
     built: true,
   },

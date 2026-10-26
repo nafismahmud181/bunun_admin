@@ -10,11 +10,13 @@ export type Hero = S['HeroContent'];
 export type Promo = S['PromoTile'];
 export type Section = S['AdminContent']['homepage_sections'][number];
 export type Faq = S['FaqItem'];
+export type ThemeColors = S['ThemeColors'];
 
 export type Result = { ok: true; url?: string } | { ok: false; error: string };
 const h = { header: {} };
 const done = (): Result => {
   revalidatePath('/content');
+  revalidatePath('/content/appearance');
   return { ok: true };
 };
 const fail = (e: unknown): Result => ({ ok: false, error: errorMessage(e) });
@@ -43,7 +45,15 @@ export async function saveFaqAction(faq: Faq[]): Promise<Result> {
   return error ? fail(error) : done();
 }
 
-export async function resetContentAction(key: 'hero' | 'promos' | 'homepage_sections' | 'faq'): Promise<Result> {
+export async function saveThemeAction(theme: ThemeColors): Promise<Result> {
+  await requireAdmin('content:write');
+  const { error } = await (await adminApi()).PUT('/api/v1/admin/content/theme', { params: h, body: theme });
+  return error ? fail(error) : done();
+}
+
+export async function resetContentAction(
+  key: 'hero' | 'promos' | 'homepage_sections' | 'faq' | 'theme',
+): Promise<Result> {
   await requireAdmin('content:write');
   const { error } = await (
     await adminApi()

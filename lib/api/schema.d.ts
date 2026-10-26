@@ -7392,6 +7392,93 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/content/theme": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Save the storefront's colour palette */
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    authorization?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ThemeColorsInput"];
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdminContent"];
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Default Response */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/content/{key}": {
         parameters: {
             query?: never;
@@ -7410,7 +7497,7 @@ export interface paths {
                     authorization?: string;
                 };
                 path: {
-                    key: "hero" | "promos" | "homepage_sections" | "faq";
+                    key: "hero" | "promos" | "homepage_sections" | "faq" | "theme";
                 };
                 cookie?: never;
             };
@@ -9361,6 +9448,20 @@ export interface components {
             q: string;
             a: string;
         };
+        ThemeColorsInput: {
+            /** @description Header, buttons and links */
+            primary: string;
+            /** @description Highlights: search button, badges, stars */
+            accent: string;
+            /** @description Body text; also the top bar and newsletter background */
+            text: string;
+            /** @description Soft background behind sections */
+            surface: string;
+            /** @description Lines and card borders */
+            border: string;
+            /** @description Footer background */
+            footer: string;
+        };
         StoreContentInput: {
             hero: components["schemas"]["HeroContentInput"];
             promos: components["schemas"]["PromoTileInput"][];
@@ -9371,6 +9472,8 @@ export interface components {
             }[];
             /** @description Placeholders such as {hotline} are already filled in */
             faq: components["schemas"]["FaqItemInput"][];
+            /** @description Null while the built-in palette (the storefront's own CSS) is in use */
+            theme: components["schemas"]["ThemeColorsInput"] | null;
         };
         StorePageInput: {
             /** @enum {string} */
@@ -9389,6 +9492,7 @@ export interface components {
                 visible: boolean;
             }[];
             faq: components["schemas"]["FaqItemInput"][];
+            theme: components["schemas"]["ThemeColorsInput"];
             /** @description Per block; null means the default is showing */
             updatedAt: {
                 [key: string]: string | null;
@@ -10593,6 +10697,20 @@ export interface components {
             q: string;
             a: string;
         };
+        ThemeColors: {
+            /** @description Header, buttons and links */
+            primary: string;
+            /** @description Highlights: search button, badges, stars */
+            accent: string;
+            /** @description Body text; also the top bar and newsletter background */
+            text: string;
+            /** @description Soft background behind sections */
+            surface: string;
+            /** @description Lines and card borders */
+            border: string;
+            /** @description Footer background */
+            footer: string;
+        };
         StoreContent: {
             hero: components["schemas"]["HeroContent"];
             promos: components["schemas"]["PromoTile"][];
@@ -10603,6 +10721,8 @@ export interface components {
             }[];
             /** @description Placeholders such as {hotline} are already filled in */
             faq: components["schemas"]["FaqItem"][];
+            /** @description Null while the built-in palette (the storefront's own CSS) is in use */
+            theme: components["schemas"]["ThemeColors"] | null;
         };
         StorePage: {
             /** @enum {string} */
@@ -10621,6 +10741,7 @@ export interface components {
                 visible: boolean;
             }[];
             faq: components["schemas"]["FaqItem"][];
+            theme: components["schemas"]["ThemeColors"];
             /** @description Per block; null means the default is showing */
             updatedAt: {
                 [key: string]: string | null;
