@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: { default: 'Bunun Admin', template: '%s | Bunun Admin' },
+  title: { default: 'BGD Mart Admin', template: '%s | BGD Mart Admin' },
   robots: { index: false, follow: false, nocache: true },
 };
 

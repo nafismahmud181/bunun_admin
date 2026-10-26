@@ -19,7 +19,7 @@ export default function LoginForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Bunon Admin</CardTitle>
+        <CardTitle>BGD Mart Admin</CardTitle>
         <CardDescription>
           {state.step === 'password'
             ? 'Sign in to manage the store.'

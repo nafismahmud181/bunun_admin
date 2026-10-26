@@ -2,7 +2,7 @@
   "name": "bunun-admin",
   "version": "0.1.0",
   "private": true,
-  "description": "Bunun store admin panel (Next.js)",
+  "description": "BGD Mart store admin panel (Next.js)",
   "engines": {
     "node": ">=24"
   },

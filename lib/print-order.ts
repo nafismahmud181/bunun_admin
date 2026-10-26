@@ -10,6 +10,6 @@ export async function loadPrintableOrder(orderNo: string) {
     apiClient().GET('/api/v1/settings'),
   ]);
   if (response.status === 404 || !order) notFound();
-  const store = settings?.store ?? { name: 'Bunon', address: '', email: '', tradeLicence: '' };
+  const store = settings?.store ?? { name: 'BGD Mart', address: '', email: '', tradeLicence: '' };
   return { order, hotline: settings?.hotline ?? '', store };
 }

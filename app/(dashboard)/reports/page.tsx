@@ -118,7 +118,7 @@ export default async function ReportsPage({ searchParams }: PageProps<'/reports'
     );
 
   const s = r.summary;
-  const file = (name: string) => `bunon-${name}-${r.range.from}-to-${r.range.to}.csv`;
+  const file = (name: string) => `bgdmart-${name}-${r.range.from}-to-${r.range.to}.csv`;
   const productTotal = r.products.reduce((a, p) => a + p.revenue, 0);
   const categoryTotal = r.categories.reduce((a, c) => a + c.revenue, 0);
   const sourceTotal = r.sources.reduce((a, c) => a + c.revenue, 0);

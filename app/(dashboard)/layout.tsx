@@ -21,12 +21,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
     <div className="flex min-h-screen">
       {/* Stays in place while the page scrolls; scrolls on its own if the menu is taller than the window. */}
       <aside className="sticky top-0 hidden h-screen w-56 shrink-0 overflow-y-auto border-r bg-background md:block print:hidden">
-        <div className="flex h-14 items-center border-b px-5 font-semibold">Bunon Admin</div>
+        <div className="flex h-14 items-center border-b px-5 font-semibold">BGD Mart Admin</div>
         <Sidebar modules={modules} />
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-14 items-center justify-between gap-3 border-b bg-background px-4 md:px-6 print:hidden">
-          <span className="font-semibold md:hidden">Bunon Admin</span>
+          <span className="font-semibold md:hidden">BGD Mart Admin</span>
           <span className="hidden text-sm text-muted-foreground md:block">Store management</span>
           <div className="flex items-center gap-3">
             <Link

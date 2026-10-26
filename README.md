@@ -1,6 +1,6 @@
-# Bunun admin
+# BGD Mart admin
 
-Admin panel for the Bunun store: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4 + shadcn/ui. See `ROADMAP.md` in the project folder for the full plan.
+Admin panel for the BGD Mart store: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4 + shadcn/ui. See `ROADMAP.md` in the project folder for the full plan.
 
 Sibling repositories: `bunun_backend` (API) and `bunun_frontend` (storefront).
 
